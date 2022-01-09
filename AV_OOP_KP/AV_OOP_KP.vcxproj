@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="app\Application.cpp" />
     <ClCompile Include="AV_OOP_KP.cpp" />
     <ClCompile Include="deps\src\gl3w.c" />
     <ClCompile Include="deps\src\imgui.cpp" />
@@ -152,6 +153,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="app\Application.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
