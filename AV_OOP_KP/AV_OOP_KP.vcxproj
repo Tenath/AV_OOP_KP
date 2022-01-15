@@ -72,6 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(MSBuildProjectDirectory)\deps\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -142,7 +143,6 @@
   <ItemGroup>
     <ClCompile Include="app\Application.cpp" />
     <ClCompile Include="AV_OOP_KP.cpp" />
-    <ClCompile Include="deps\src\gl3w.c" />
     <ClCompile Include="deps\src\imgui.cpp" />
     <ClCompile Include="deps\src\imgui_demo.cpp" />
     <ClCompile Include="deps\src\imgui_draw.cpp" />
@@ -150,12 +150,18 @@
     <ClCompile Include="deps\src\imgui_impl_sdl.cpp" />
     <ClCompile Include="deps\src\imgui_tables.cpp" />
     <ClCompile Include="deps\src\imgui_widgets.cpp" />
+    <ClCompile Include="math\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app\Application.hpp" />
+    <ClInclude Include="math\av_camera.hpp" />
+    <ClInclude Include="math\av_matrix_t.hpp" />
+    <ClInclude Include="math\av_polar.hpp" />
+    <ClInclude Include="math\av_vector_t.hpp" />
+    <ClInclude Include="math\Transform.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
