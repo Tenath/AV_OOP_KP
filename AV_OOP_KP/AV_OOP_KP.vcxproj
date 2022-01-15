@@ -142,6 +142,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="app\Application.cpp" />
+    <ClCompile Include="app\EditorApplication.cpp" />
+    <ClCompile Include="app\GuiManager.cpp" />
     <ClCompile Include="AV_OOP_KP.cpp" />
     <ClCompile Include="deps\src\imgui.cpp" />
     <ClCompile Include="deps\src\imgui_demo.cpp" />
@@ -150,18 +152,40 @@
     <ClCompile Include="deps\src\imgui_impl_sdl.cpp" />
     <ClCompile Include="deps\src\imgui_tables.cpp" />
     <ClCompile Include="deps\src\imgui_widgets.cpp" />
-    <ClCompile Include="math\Transform.cpp" />
+    <ClCompile Include="globj\Program.cpp" />
+    <ClCompile Include="globj\Shader.cpp" />
+    <ClCompile Include="scene\LightSource.cpp" />
+    <ClCompile Include="scene\Material.cpp" />
+    <ClCompile Include="scene\Model.cpp" />
+    <ClCompile Include="scene\SceneEntity.cpp" />
+    <ClCompile Include="scene\Transform.cpp" />
+    <ClCompile Include="utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app\Application.hpp" />
+    <ClInclude Include="app\EditorApplication.hpp" />
+    <ClInclude Include="app\GuiManager.hpp" />
+    <ClInclude Include="globj\BindableObject.hpp" />
+    <ClInclude Include="globj\PrimitiveSequence.hpp" />
+    <ClInclude Include="globj\Program.hpp" />
+    <ClInclude Include="globj\Shader.hpp" />
+    <ClInclude Include="globj\Vertex.hpp" />
+    <ClInclude Include="globj\VertexArray.hpp" />
     <ClInclude Include="math\av_camera.hpp" />
     <ClInclude Include="math\av_matrix_t.hpp" />
     <ClInclude Include="math\av_polar.hpp" />
     <ClInclude Include="math\av_vector_t.hpp" />
-    <ClInclude Include="math\Transform.hpp" />
+    <ClInclude Include="scene\LightSource.hpp" />
+    <ClInclude Include="scene\Material.hpp" />
+    <ClInclude Include="scene\Model.hpp" />
+    <ClInclude Include="scene\ObjectGroup.hpp" />
+    <ClInclude Include="scene\Scene.hpp" />
+    <ClInclude Include="scene\SceneEntity.hpp" />
+    <ClInclude Include="scene\Transform.hpp" />
+    <ClInclude Include="utils\Utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,8 @@
 #ifndef AV_VECTOR_HPP
 #define AV_VECTOR_HPP
 
+// (c) 2013-2021 Andrei Veeremaa
+
 #include <cstddef>
 #include <cmath>
 
@@ -12,11 +14,16 @@
 
 namespace av {
 
+// Шаблон "геометрический вектор"
+// Параметры: T - тип, D - размерность вектора
 template <class T, size_t D> class Vector
 {
 	protected:
 	T vec[D];
 	
+	// Эксперимент со статической оптимизацией заполнения вектора
+	// (если компилятор поймёт нас правильно - оптимизирует в цепочку 
+	// операций без отдельных вызовов процедур)
 	template<class C, size_t n> class RecSet
 	{
 		public:
@@ -24,10 +31,11 @@ template <class T, size_t D> class Vector
 		static void set(C value, C* ref)
 		{
 			*ref=value;
-			RecSet<C,n-1>::set(value,++ref);
+			RecSet<C,n-1>::set(value,++ref); // здесь рекурсия
 		}
 	};
 
+	// Стопор рекурсивного шаблона
 	template <class C> class RecSet<C, 0>
 	{
 		public:
@@ -51,6 +59,7 @@ template <class T, size_t D> class Vector
 	template <size_t n> void SetElement(T value) { static_assert(n<=D, "Array index out of bounds."); vec[n]=value; }
 	template <size_t n> void Set(T value) { static_assert(n<=D, "Array index out of bounds."); vec[n]=value; }
 	
+	// Присвоение через variadic template
 	template<typename... Args> void assign(Args... args)
 	{
 		static_assert(sizeof...(Args)==D, "Argument count must be equal to vector size");
