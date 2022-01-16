@@ -8,7 +8,7 @@ namespace av
 	class Model
 	{
 		VertexArray<Vertex, USHORT>* va;
-		PrimitiveSequence<USHORT> ps;
+		DrawSequence<Vertex, USHORT> ps;
 
 	public:
 		Model(const std::string& filename);

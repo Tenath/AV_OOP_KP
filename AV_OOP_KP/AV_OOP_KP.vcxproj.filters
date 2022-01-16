@@ -72,6 +72,9 @@
     <ClCompile Include="scene\SceneEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="globj\VertexArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -113,7 +116,7 @@
     <ClInclude Include="globj\VertexArray.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="globj\PrimitiveSequence.hpp">
+    <ClInclude Include="globj\DrawSequence.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="globj\Vertex.hpp">
@@ -138,6 +141,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scene\SceneEntity.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Mesh.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="globals.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="globj\VertexGroup.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

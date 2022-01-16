@@ -1,7 +1,10 @@
 #pragma once
 #include <vector>
+#include <string>
+#include <initializer_list>
 #include "BindableObject.hpp"
-#include "PrimitiveSequence.hpp"
+#include "DrawSequence.hpp"
+#include "VertexGroup.hpp"
 
 namespace av
 {
@@ -23,10 +26,10 @@ namespace av
 		// Index Buffer Object (IBO) aka Element Buffer Object (EBO) - блок памяти с массивом индексов к вертексам
 		GLuint ib_handle = 0;
 
-		std::vector<Vertex> vertices; // содержимое будет заливаться в VBO
+		std::vector<VertexT> vertices; // содержимое будет заливаться в VBO
 		std::vector<IndexT> indices; // содержимое будет заливаться в IBO
 
-		std::vector<PrimitiveSequence<IndexT>> primseq; // наборы примитивов для отрисовки
+		std::vector<DrawSequence<VertexT,IndexT>> drawseq; // наборы примитивов для отрисовки
 
 		void SetupGLObjects();
 
@@ -42,10 +45,7 @@ namespace av
 	public:
 		VertexArray();
 
-		VertexArray(
-			std::vector<VertexT>& p_vertices, 
-			std::vector<PrimitiveSequence<IndexT>>& p_sequences
-		);
+		VertexArray(std::vector<DrawSequence<VertexT,IndexT>>& p_sequences);
 
 		~VertexArray();
 
@@ -73,7 +73,7 @@ namespace av
 	{
 		size_t indexcount = 0;
 
-		for (PrimitiveSequence<IndexT>& seq : primseq)
+		for (DrawSequence<IndexT>& seq : drawseq)
 		{
 			indexcount += seq.GetIndexCount();
 		}
@@ -96,7 +96,7 @@ namespace av
 		indices.reserve(TotalIndexCount());
 		size_t offset = 0;
 
-		for (PrimitiveSequence<IndexT>& seq : primseq)
+		for (DrawSequence<IndexT>& seq : drawseq)
 		{
 			// добавляем индексы последовательности в массив под IBO
 			indices.insert(indices.end(), seq.indices.begin(), seq.indices.end());
@@ -136,10 +136,7 @@ namespace av
 	}
 
 	template <typename VertexT, typename IndexT>
-	VertexArray<VertexT, IndexT>::VertexArray(
-		std::vector<VertexT>& p_vertices, 
-		std::vector<PrimitiveSequence<IndexT>>& p_sequences
-	) :	vertices(p_vertices), primseq(p_sequences)
+	VertexArray<VertexT, IndexT>::VertexArray(std::vector<DrawSequence<VertexT,IndexT>>& p_sequences) :	drawseq(p_sequences)
 	{
 		try
 		{
@@ -180,8 +177,15 @@ namespace av
 	template <typename VertexT, typename IndexT>
 	void VertexArray<VertexT, IndexT>::Draw(size_t ps_index)
 	{
-		if (ps_index > primseq.size())
-			throw std::out_of_range("VertexArray.Draw(): PrimitiveSequence index out of bounds");
-		primseq[ps_index].Draw();
+		if (ps_index > drawseq.size())
+			throw std::out_of_range("VertexArray.Draw(): DrawSequence index out of bounds");
+		drawseq[ps_index].Draw();
 	}
+
+	template <typename VertexT, typename IndexT>
+	class VertexArrayPointer
+	{
+		VertexArray<VertexT, IndexT>* va;
+		DrawSequence<VertexT, IndexT>* seq;
+	};
 }

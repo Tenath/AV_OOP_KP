@@ -2,24 +2,17 @@
 #include <vector>
 #include <initializer_list>
 #include <GL/gl3w.h>
+#include "VertexGroup.hpp"
 
 namespace av
 {
-	enum class PrimitiveType : unsigned char
-	{
-		Points = 0,
-		Lines = 1,
-		Triangles = 2,
-		TriFan = 3,
-		TriStrip = 4
-	};
-
-	template <typename IndexT> class PrimitiveSequence
+	template <typename VertexT, typename IndexT> class DrawSequence
 	{
 	public:
-		std::vector<IndexT> indices;
-		PrimitiveType type = PrimitiveType::Triangles;
-		size_t offset = 0;
+		VertexGroup<VertexT>* vertices = nullptr;
+		IndexGroup<IndexT>* indices = nullptr;
+		size_t vertex_offset = 0;
+		size_t index_offset = 0;
 
 	public:
 		constexpr inline GLenum GetIndexType()
@@ -29,7 +22,7 @@ namespace av
 				GL_UNSIGNED_INT;
 		}
 
-		inline size_t GetIndexCount() { return indices.size(); }
+		inline size_t GetIndexCount() { return indices->GetIndices().size(); }
 
 		static GLenum PrimitiveTypeGetSymbol(PrimitiveType type)
 		{
@@ -47,13 +40,12 @@ namespace av
 			return result;
 		}
 
-		PrimitiveSequence() {}
-		PrimitiveSequence(PrimitiveType t, std::initializer_list<IndexT> ilst) : type(t), indices(ilst) {}
-		PrimitiveSequence(PrimitiveType t, std::vector<IndexT> vec) : type(t), indices(vec) {}
+		DrawSequence() {}
+		DrawSequence(VertexGroup<VertexT>* vgrp, IndexGroup<IndexT>* igrp) : vertices(vgrp), indices(igrp) {}
 
 		void Draw()
 		{
-			glDrawElements(PrimitiveTypeGetSymbol(type), (GLsizei)indices.size(), GetIndexType(), (void*)offset);
+			glDrawElements(PrimitiveTypeGetSymbol(indices->type), (GLsizei)indices->GetIndices().size(), GetIndexType(), (void*)index_offset);
 		}
 	};
 }
