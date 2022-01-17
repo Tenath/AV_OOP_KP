@@ -2,9 +2,11 @@
 #include <vector>
 #include <string>
 #include <initializer_list>
+#include <algorithm>
 #include "BindableObject.hpp"
 #include "DrawSequence.hpp"
 #include "VertexGroup.hpp"
+#include "../utils/Utils.hpp"
 
 namespace av
 {
@@ -26,22 +28,33 @@ namespace av
 		// Index Buffer Object (IBO) aka Element Buffer Object (EBO) - блок памяти с массивом индексов к вертексам
 		GLuint ib_handle = 0;
 
-		std::vector<VertexT> vertices; // содержимое будет заливаться в VBO
-		std::vector<IndexT> indices; // содержимое будет заливаться в IBO
+		std::vector<VertexT> vertices; // содержимое будет отправляться в VBO
+		std::vector<IndexT> indices; // содержимое будет отправляться в IBO
 
-		std::vector<DrawSequence<VertexT,IndexT>> drawseq; // наборы примитивов для отрисовки
+		std::vector<DrawSequence<VertexT,IndexT>*> drawseq; // наборы примитивов для отрисовки
 
 		void SetupGLObjects();
 
 		void CleanupGLObjects();
 
 		size_t TotalIndexCount();
+		size_t TotalVertexCount();
 
+		void RegenerateVertexArray();
 		void RegenerateIndexArray();
 
 		void UpdateVertexBuffer();
 
 		void UpdateIndexBuffer();
+
+		void RegenerateAndUpdate()
+		{
+			RegenerateVertexArray();
+			RegenerateIndexArray();
+
+			UpdateVertexBuffer();
+			UpdateIndexBuffer();
+		}
 	public:
 		VertexArray();
 
@@ -53,7 +66,32 @@ namespace av
 
 		void Unbind();
 
+		void RestoreBufferBindings()
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, vb_handle);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib_handle);
+		}
+
 		void Draw(size_t ps_index);
+
+		void AddDS(DrawSequence<VertexT,IndexT>* ds)
+		{
+			if (!VectorContains(drawseq, ds))
+			{
+				drawseq.push_back(ds);
+				RegenerateAndUpdate();
+			}
+		}
+
+		void RemoveDS(DrawSequence<VertexT, IndexT>* ds)
+		{
+			if (VectorContains(drawseq, ds))
+			{
+				drawseq.erase(std::find(drawseq.begin(), drawseq.end(), ds));
+				//std::remove(drawseq.begin(), drawseq.end(), ds);
+				RegenerateAndUpdate();
+			}
+		}
 	};
 
 	template <typename VertexT, typename IndexT> 
@@ -65,7 +103,11 @@ namespace av
 		glGenBuffers(1, &vb_handle);
 		// Создаём IBO (пустой)
 		glGenBuffers(1, &ib_handle);
+
+		glBindVertexArray(va_handle);
 		VertexT::SetupVertexArray(va_handle);
+		RestoreBufferBindings();
+		glBindVertexArray(0);
 	}
 
 	template <typename VertexT, typename IndexT>
@@ -73,12 +115,25 @@ namespace av
 	{
 		size_t indexcount = 0;
 
-		for (DrawSequence<IndexT>& seq : drawseq)
+		for (DrawSequence<VertexT,IndexT>* seq : drawseq)
 		{
-			indexcount += seq.GetIndexCount();
+			indexcount += seq->GetIndexCount();
 		}
 
 		return indexcount;
+	}
+
+	template <typename VertexT, typename IndexT>
+	size_t VertexArray<VertexT, IndexT>::TotalVertexCount()
+	{
+		size_t vertexcount = 0;
+
+		for (DrawSequence<VertexT, IndexT>& seq : drawseq)
+		{
+			vertexcount += seq.GetVertexCount();
+		}
+
+		return vertexcount;
 	}
 
 	template <typename VertexT, typename IndexT>
@@ -96,12 +151,34 @@ namespace av
 		indices.reserve(TotalIndexCount());
 		size_t offset = 0;
 
-		for (DrawSequence<IndexT>& seq : drawseq)
+		for (DrawSequence<VertexT,IndexT>* seq : drawseq)
 		{
 			// добавляем индексы последовательности в массив под IBO
-			indices.insert(indices.end(), seq.indices.begin(), seq.indices.end());
-			seq.offset = offset;
-			offset += seq.indices.size() * sizeof(IndexT);
+			//indices.insert(indices.end(), seq.indices.begin(), seq.indices.end());
+			for (IndexT& n : seq->GetIndexGroup()->GetIndices())
+			{
+				n += static_cast<IndexT>(seq->GetVertexOffset());
+			}
+			seq->SetIndexOffset(offset);
+			offset += seq->GetIndexGroup()->GetIndices().size() * sizeof(IndexT);
+		}
+	}
+
+	template <typename VertexT, typename IndexT>
+	void VertexArray<VertexT, IndexT>::RegenerateVertexArray()
+	{
+		vertices.clear();
+		vertices.reserve(TotalIndexCount());
+		size_t offset = 0;
+
+		for (DrawSequence<VertexT, IndexT>* seq : drawseq)
+		{
+			// добавляем вертексы последовательности в массив под VBO
+			vertices.insert(vertices.end(), 
+				seq->GetVertexGroup()->GetVertices().begin(), 
+				seq->GetVertexGroup()->GetVertices().end());
+			seq->SetVertexOffset(offset);
+			offset += seq->GetVertexGroup()->GetVertices().size() * sizeof(VertexT);
 		}
 	}
 
@@ -109,23 +186,23 @@ namespace av
 	void VertexArray<VertexT, IndexT>::UpdateVertexBuffer()
 	{
 		glBindVertexArray(va_handle);
-		glBindBuffer(GL_ARRAY_BUFFER, vb_handle);
+		//glBindBuffer(GL_ARRAY_BUFFER, vb_handle);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(VertexT) * vertices.size(), vertices.data(), GL_DYNAMIC_DRAW);
 
 		VertexT::SetupLayout(vb_handle);
 
 		glBindVertexArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	template <typename VertexT, typename IndexT>
 	void VertexArray<VertexT, IndexT>::UpdateIndexBuffer()
 	{
 		glBindVertexArray(va_handle);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib_handle);
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib_handle);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(IndexT) * indices.size(), indices.data(), GL_DYNAMIC_DRAW);
 		glBindVertexArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	template <typename VertexT, typename IndexT>
@@ -162,16 +239,16 @@ namespace av
 	void VertexArray<VertexT, IndexT>::Bind()
 	{
 		glBindVertexArray(va_handle);
-		glBindBuffer(GL_ARRAY_BUFFER, vb_handle);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib_handle);
+		//glBindBuffer(GL_ARRAY_BUFFER, vb_handle);
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib_handle);
 	}
 
 	template <typename VertexT, typename IndexT>
 	void VertexArray<VertexT, IndexT>::Unbind()
 	{
 		glBindVertexArray(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		//glBindBuffer(GL_ARRAY_BUFFER, 0);
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
 	template <typename VertexT, typename IndexT>
@@ -185,7 +262,48 @@ namespace av
 	template <typename VertexT, typename IndexT>
 	class VertexArrayPointer
 	{
-		VertexArray<VertexT, IndexT>* va;
-		DrawSequence<VertexT, IndexT>* seq;
+		VertexArray<VertexT, IndexT>* va = nullptr;
+		DrawSequence<VertexT, IndexT>* seq = nullptr;
+
+		void Attach(VertexArray<VertexT, IndexT>* p_va)
+		{
+			if(p_va != nullptr) va->AddDS(seq);
+		}
+	public:
+		void Free()
+		{
+			if (va != nullptr && seq !=nullptr)
+			{
+				va->RemoveDS(seq);
+				va = nullptr;
+				delete seq;
+				seq = nullptr;
+			}
+		}
+
+		VertexArrayPointer(
+			VertexArray<VertexT, IndexT>& varray,
+			DrawSequence<VertexT, IndexT>* drawseq
+		) : va(&varray), seq(&drawseq)
+		{
+			Attach(va);
+		}
+
+		static VertexArrayPointer&& Setup(
+			VertexArray<VertexT, IndexT>& va,
+			VertexGroup<VertexT>* vg,
+			IndexGroup<IndexT>* ig
+		)
+		{
+			VertexArrayPointer ptr(va, new DrawSequence<VertexT, IndexT>(vg,ig));
+			return ptr;
+		}
+
+		VertexArrayPointer() {}
+
+		~VertexArrayPointer()
+		{
+			Free();
+		}
 	};
 }

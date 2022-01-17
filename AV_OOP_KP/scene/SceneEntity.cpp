@@ -3,7 +3,7 @@
 
 namespace av
 {
-	void SceneEntity::Draw()
+	/*void SceneEntity::Draw()
 	{
 		UpdateUniforms();
 		if (material != nullptr) material->UpdateUniforms();
@@ -16,5 +16,5 @@ namespace av
 			[&](GLuint u) { glUniformMatrix4fv(u, 1, false, transform.GetMatrix().data); });
 		material->GetProgram()->UpdateUniform("base_color",
 			[&](GLuint u) { glUniform4fv(u, 1, color.data()); });
-	}
+	}*/
 }

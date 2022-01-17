@@ -6,7 +6,8 @@
 
 namespace av
 {
-	template <typename VertexT, typename IndexT> class DrawSequence
+	template <typename VertexT, typename IndexT>
+	class DrawSequence
 	{
 	public:
 		VertexGroup<VertexT>* vertices = nullptr;
@@ -22,7 +23,15 @@ namespace av
 				GL_UNSIGNED_INT;
 		}
 
-		inline size_t GetIndexCount() { return indices->GetIndices().size(); }
+		inline size_t GetIndexCount() 
+		{ 
+			return (indices != nullptr) ? indices->GetIndices().size() : 0; 
+		}
+
+		inline size_t GetVertexCount()
+		{
+			return (vertices != nullptr) ? vertices->GetVertices().size() : 0;
+		}
 
 		static GLenum PrimitiveTypeGetSymbol(PrimitiveType type)
 		{
@@ -43,9 +52,21 @@ namespace av
 		DrawSequence() {}
 		DrawSequence(VertexGroup<VertexT>* vgrp, IndexGroup<IndexT>* igrp) : vertices(vgrp), indices(igrp) {}
 
-		void Draw()
-		{
-			glDrawElements(PrimitiveTypeGetSymbol(indices->type), (GLsizei)indices->GetIndices().size(), GetIndexType(), (void*)index_offset);
-		}
+		void Draw();
+
+		VertexGroup<VertexT>* GetVertexGroup() { return vertices; }
+		IndexGroup<IndexT>* GetIndexGroup() { return indices; }
+
+		size_t GetVertexOffset() { return vertex_offset; }
+		size_t GetIndexOffset() { return index_offset; }
+
+		void SetVertexOffset(size_t offset) { vertex_offset = offset; }
+		void SetIndexOffset(size_t offset) { index_offset = offset; }
 	};
+
+	template <typename VertexT, typename IndexT>
+	void DrawSequence<VertexT, IndexT>::Draw()
+	{
+		glDrawElements(PrimitiveTypeGetSymbol(indices->type), (GLsizei)indices->GetIndices().size(), GetIndexType(), (void*)index_offset);
+	}
 }

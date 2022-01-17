@@ -7,14 +7,12 @@
 
 namespace av
 {
-	class SceneEntity
+	/*class SceneEntity
 	{
-		Model* model = nullptr;
+		
 		Material* material = nullptr;
 		Transform transform;
-		/*Vector4f position;
-		Vector3f rotation;
-		float scale = 1.0f;*/
+		Model* model = nullptr;
 		Vector4f color = { 1.0f,1.0f,1.0f,0.0f };
 
 		//Matrix4f transform;
@@ -45,5 +43,5 @@ namespace av
 		void SetColor(Vector4f clr) { color = clr; }
 
 		void SetMaterial(Material* mat) { material = mat; }
-	};
+	};*/
 }

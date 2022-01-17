@@ -189,6 +189,7 @@
     <ClInclude Include="scene\Scene.hpp" />
     <ClInclude Include="scene\SceneEntity.hpp" />
     <ClInclude Include="scene\Transform.hpp" />
+    <ClInclude Include="shapes\Shape.hpp" />
     <ClInclude Include="utils\Utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

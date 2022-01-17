@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <functional>
 #include "../math/av_vector_t.hpp"
 
 namespace av
@@ -15,6 +16,19 @@ namespace av
 	template <typename T> inline bool VectorContains(const std::vector<T>& vec, const T& value)
 	{
 		return std::find(vec.begin(), vec.end(), value) != vec.end();
+	}
+
+	template <typename T> inline bool VectorContainsPredicate(const std::vector<T>& vec, std::function<bool(const T&)> predicate)
+	{
+		bool result = false;
+
+		for (const T& val : vec)
+		{
+			result = predicate(val);
+			if (result) return true;
+		}
+
+		return result;
 	}
 
 	template<typename K, typename V> inline bool MapContainsKey(const std::map<K, V>& m, const K& key)

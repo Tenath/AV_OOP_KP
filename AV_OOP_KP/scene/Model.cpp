@@ -2,11 +2,12 @@
 
 namespace av
 {
-	Model::Model(const std::string& filename) { /*va = ReadObjFileNC(filename);*/ }
+	//Model::Model(const std::string& filename) { /*va = ReadObjFileNC(filename);*/ }
+
 
 	Model::~Model()
 	{
-		if (va != nullptr) delete va;
+		//if (va != nullptr) delete va;
 	}
 
 	void Model::Draw()
