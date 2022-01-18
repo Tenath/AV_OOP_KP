@@ -26,7 +26,8 @@ namespace av
 		// Здесь описываем компоновку аттрибутов в VBO
 		static void SetupLayout(GLuint vbo)
 		{
-			glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+			//glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(3 * sizeof(float)));

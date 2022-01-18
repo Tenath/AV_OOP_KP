@@ -7,18 +7,10 @@
 
 namespace av
 {
-	class Model
+	class Model : BindableGLObject
 	{
-		Mesh* mesh;
-		//VertexArray<Vertex, USHORT>* va;
-		//DrawSequence<Vertex, USHORT> ps;
-
 	public:
-		//Model(const std::string& filename);
-		//Model(Mesh* mesh);
-
-		virtual ~Model();
-
-		virtual void Draw();
+		virtual ~Model() = 0;
+		virtual void Draw() = 0;
 	};
 }

@@ -67,6 +67,6 @@ namespace av
 	template <typename VertexT, typename IndexT>
 	void DrawSequence<VertexT, IndexT>::Draw()
 	{
-		glDrawElements(PrimitiveTypeGetSymbol(indices->type), (GLsizei)indices->GetIndices().size(), GetIndexType(), (void*)index_offset);
+		glDrawElements(PrimitiveTypeGetSymbol(indices->GetType()), (GLsizei)indices->GetIndices().size(), GetIndexType(), (void*)index_offset);
 	}
 }

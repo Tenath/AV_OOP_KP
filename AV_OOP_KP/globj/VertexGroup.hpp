@@ -51,9 +51,11 @@ namespace av
 
 		IndexGroup(
 			const std::string& p_name,
-			const std::vector<IndexT>& lst
-		) : name(p_name), indices(lst) {}
+			const std::vector<IndexT>& lst,
+			PrimitiveType p_type
+		) : name(p_name), indices(lst), type(p_type) {}
 
 		std::vector<IndexT>& GetIndices() { return indices; }
+		PrimitiveType GetType() { return type; }
 	};
 }

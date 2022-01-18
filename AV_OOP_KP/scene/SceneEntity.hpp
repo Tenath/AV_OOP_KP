@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "..\math\av_vector_t.hpp"
 #include "..\math\av_matrix_t.hpp"
 #include "Material.hpp"
@@ -7,7 +8,9 @@
 
 namespace av
 {
-	/*class SceneEntity
+	class Model;
+
+	class SceneEntity
 	{
 		
 		Material* material = nullptr;
@@ -42,6 +45,7 @@ namespace av
 		Vector4f GetColor() { return color; }
 		void SetColor(Vector4f clr) { color = clr; }
 
+		Material* GetMaterial() { return material; }
 		void SetMaterial(Material* mat) { material = mat; }
-	};*/
+	};
 }

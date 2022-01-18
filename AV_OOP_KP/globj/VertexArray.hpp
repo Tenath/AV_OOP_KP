@@ -62,14 +62,18 @@ namespace av
 
 		~VertexArray();
 
-		void Bind();
+		GLuint GetHandle() override { return va_handle; }
 
-		void Unbind();
+		void Bind() override;
+
+		void Unbind() override;
 
 		void RestoreBufferBindings()
 		{
+			Bind();
 			glBindBuffer(GL_ARRAY_BUFFER, vb_handle);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib_handle);
+			Unbind();
 		}
 
 		void Draw(size_t ps_index);
@@ -157,7 +161,8 @@ namespace av
 			//indices.insert(indices.end(), seq.indices.begin(), seq.indices.end());
 			for (IndexT& n : seq->GetIndexGroup()->GetIndices())
 			{
-				n += static_cast<IndexT>(seq->GetVertexOffset());
+				//n += static_cast<IndexT>(seq->GetVertexOffset());
+				indices.push_back(n);
 			}
 			seq->SetIndexOffset(offset);
 			offset += seq->GetIndexGroup()->GetIndices().size() * sizeof(IndexT);
@@ -218,6 +223,7 @@ namespace av
 		try
 		{
 			SetupGLObjects();
+			RegenerateVertexArray();
 			RegenerateIndexArray();
 			UpdateVertexBuffer();
 			UpdateIndexBuffer();
@@ -239,24 +245,20 @@ namespace av
 	void VertexArray<VertexT, IndexT>::Bind()
 	{
 		glBindVertexArray(va_handle);
-		//glBindBuffer(GL_ARRAY_BUFFER, vb_handle);
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib_handle);
 	}
 
 	template <typename VertexT, typename IndexT>
 	void VertexArray<VertexT, IndexT>::Unbind()
 	{
 		glBindVertexArray(0);
-		//glBindBuffer(GL_ARRAY_BUFFER, 0);
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 
 	template <typename VertexT, typename IndexT>
 	void VertexArray<VertexT, IndexT>::Draw(size_t ps_index)
 	{
-		if (ps_index > drawseq.size())
+		if (ps_index >= drawseq.size())
 			throw std::out_of_range("VertexArray.Draw(): DrawSequence index out of bounds");
-		drawseq[ps_index].Draw();
+		drawseq[ps_index]->Draw();
 	}
 
 	template <typename VertexT, typename IndexT>
@@ -289,21 +291,26 @@ namespace av
 			Attach(va);
 		}
 
-		static VertexArrayPointer&& Setup(
-			VertexArray<VertexT, IndexT>& va,
-			VertexGroup<VertexT>* vg,
-			IndexGroup<IndexT>* ig
-		)
-		{
-			VertexArrayPointer ptr(va, new DrawSequence<VertexT, IndexT>(vg,ig));
-			return ptr;
-		}
-
-		VertexArrayPointer() {}
-
 		~VertexArrayPointer()
 		{
 			Free();
 		}
+
+		void Setup(
+			VertexArray<VertexT, IndexT>& p_va,
+			VertexGroup<VertexT>* vg,
+			IndexGroup<IndexT>* ig
+		)
+		{
+			Free();
+			va = p_va;
+			seq = new DrawSequence<VertexT, IndexT>(vg,ig);
+			va->AddDS(seq);
+		}
+
+		VertexArrayPointer() {}
+
+		VertexArray<VertexT, IndexT>& GetVertexArray() { return va; }
+		DrawSequence<VertexT, IndexT>& GetDrawSequence() { return seq; }
 	};
 }

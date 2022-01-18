@@ -32,9 +32,20 @@ namespace av
 		}
 	public:
 
-		Mesh()
+		Mesh(
+			const std::string& name,
+			const std::vector<Vertex>& p_vertices, 
+			const std::vector<ushort>& p_indices,
+			PrimitiveType p_type,
+			Material* mt,
+			VertexArray<Vertex, ushort>* varray = nullptr
+		)
 		{
+			vertices = new VertexGroup<Vertex>(name + ".vertices", p_vertices);
+			indices = new IndexGroup<ushort>(name + ".indices", p_indices, p_type);
+			material = mt;
 
+			if (varray != nullptr) SetupVertexArray(*varray);
 		}
 
 		~Mesh()

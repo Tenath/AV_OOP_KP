@@ -4,9 +4,10 @@
 #include <iostream>
 #include <SDL.h>
 #include "app\Application.hpp"
+#include "app\EditorApplication.hpp"
 
 int main(int argc, char* argv[])
 {
-    av::Application app(argc, argv);
+    av::EditorApplication app(argc, argv);
     return app.Run();;
 }
