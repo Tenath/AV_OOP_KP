@@ -1,11 +1,13 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "..\globals.hpp"
 #include "..\globj\VertexArray.hpp"
 #include "..\globj\Vertex.hpp"
 #include "..\globj\VertexGroup.hpp"
 #include "Material.hpp"
-#include "..\globals.hpp"
+#include "Model.hpp"
+#include "..\globj\Program.hpp"
 
 namespace av
 {
@@ -62,6 +64,21 @@ namespace av
 			va = &p_va;
 			va->AddDS(ds);
 			//va_ptr = VertexArrayPointer<Vertex, ushort>::Setup(va, *vertices, *indices);
+		}
+
+		void Bind()
+		{
+			if(material != nullptr) material->GetProgram()->Bind();
+			if (va != nullptr) va->Bind();
+		}
+
+		void Draw()
+		{
+			if (ds != nullptr)
+			{
+				Bind();
+				ds->Draw();
+			}
 		}
 	};
 }

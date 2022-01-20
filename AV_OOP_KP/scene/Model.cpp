@@ -5,7 +5,7 @@ namespace av
 	//Model::Model(const std::string& filename) { /*va = ReadObjFileNC(filename);*/ }
 
 
-	Model::~Model()
+	/*Model::~Model()
 	{
 		//if (va != nullptr) delete va;
 	}
@@ -14,5 +14,5 @@ namespace av
 	{
 		//for (size_t i = 0; i <= ps.size(); i++) { va->Draw(i); }
 		//va->Draw();
-	}
+	}*/
 }

@@ -155,8 +155,10 @@
     <ClCompile Include="globj\Program.cpp" />
     <ClCompile Include="globj\Shader.cpp" />
     <ClCompile Include="globj\VertexArray.cpp" />
+    <ClCompile Include="primitives\TriangleBase.cpp" />
     <ClCompile Include="scene\LightSource.cpp" />
     <ClCompile Include="scene\Material.cpp" />
+    <ClCompile Include="scene\Mesh.cpp" />
     <ClCompile Include="scene\Model.cpp" />
     <ClCompile Include="scene\SceneEntity.cpp" />
     <ClCompile Include="scene\Transform.cpp" />
@@ -181,6 +183,8 @@
     <ClInclude Include="math\av_matrix_t.hpp" />
     <ClInclude Include="math\av_polar.hpp" />
     <ClInclude Include="math\av_vector_t.hpp" />
+    <ClInclude Include="primitives\PrimitiveBase.hpp" />
+    <ClInclude Include="primitives\TriangleBase.hpp" />
     <ClInclude Include="scene\LightSource.hpp" />
     <ClInclude Include="scene\Material.hpp" />
     <ClInclude Include="scene\Mesh.hpp" />
@@ -188,6 +192,7 @@
     <ClInclude Include="scene\ObjectGroup.hpp" />
     <ClInclude Include="scene\Scene.hpp" />
     <ClInclude Include="scene\SceneEntity.hpp" />
+    <ClInclude Include="scene\SceneEntityBuilder.hpp" />
     <ClInclude Include="scene\Transform.hpp" />
     <ClInclude Include="shapes\Shape.hpp" />
     <ClInclude Include="utils\Utils.hpp" />

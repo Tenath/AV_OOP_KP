@@ -4,11 +4,15 @@
 #include "../scene/Transform.hpp"
 #include "../scene/Mesh.hpp"
 
+#include "../primitives/TriangleBase.hpp"
+
 #include <iostream>
 
 namespace av
 {
-	Mesh* BuildTriangleMesh()
+	PrimitiveBase* tris = nullptr;
+
+	/*Mesh* BuildTriangleMesh()
 	{
 		std::vector<Vertex> vertices =
 		{
@@ -31,7 +35,7 @@ namespace av
 		);
 
 		return tri_mesh;
-	}
+	}*/
 
 	Mesh* BuildCubeMesh()
 	{
@@ -50,8 +54,10 @@ namespace av
 		return nullptr;
 	}
 
-	Mesh* triangle_mesh = nullptr;
+	//Mesh* triangle_mesh = nullptr;
 	Material* material = nullptr;
+
+	SceneEntity* entity = nullptr;
 
 	void EditorApplication::RecomputeAspectRatio()
 	{
@@ -72,11 +78,14 @@ namespace av
 
 		//DrawSequence<Vertex, ushort> triangle(PrimitiveType::Triangles, { 0,1,2 });
 		//std::vector<DrawSequence<unsigned>> sequences = { triangle };
-		triangle_mesh = BuildTriangleMesh();
+		//triangle_mesh = BuildTriangleMesh();
 
 		RecomputeAspectRatio();
 		vertex_array = new VertexArray<Vertex, ushort>();
-		triangle_mesh->SetupVertexArray(*vertex_array);
+		tris = new TriangleBase(*vertex_array);
+
+		//triangle_mesh->SetupVertexArray(*vertex_array);
+
 
 		rotation_uniform = glGetUniformLocation(program->GetHandle(), "rm");
 		aspect_uniform = glGetUniformLocation(program->GetHandle(), "aspect_ratio");
@@ -89,12 +98,20 @@ namespace av
 		glUniform1fv(aspect_uniform, 1, &aspect_ratio);
 		glUniformMatrix4fv(rotation_uniform, 1, false, rotation_matrix.data);
 		
+		entity = tris->Build()
+			.Position(Vector3f(0.3f, 0.5f, 0.2f))
+			.Rotate(Vector3f(0.2f, 0.0f, 0.0f))
+			.WithColor(Vector4f(0.5f, 0.5f, 0.0f, 1.0f))
+			.WithMaterial(*material)
+			.Finish();
+
 		program->Unbind();
 	}
 
 	EditorApplication::~EditorApplication()
 	{
-		delete triangle_mesh;
+		delete entity;
+		delete tris;
 		delete vertex_array;
 		delete material;
 		delete program;
@@ -145,8 +162,9 @@ namespace av
 		vertex_array->Bind();
 		program->Bind();
 		glUniformMatrix4fv(rotation_uniform, 1, false, rotation_matrix.data);
-
-		vertex_array->Draw(0);
+		
+		entity->Draw();
+		//vertex_array->Draw(0);
 
 		vertex_array->Unbind();
 		program->Unbind();

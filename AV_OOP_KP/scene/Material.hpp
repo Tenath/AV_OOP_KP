@@ -16,7 +16,7 @@ namespace av
 		float Shininess;
 		// TODO: Texture
 
-		Program* program;
+		Program* program = nullptr;
 
 		void UpdateUniforms();
 

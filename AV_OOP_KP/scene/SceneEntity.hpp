@@ -4,37 +4,45 @@
 #include "..\math\av_matrix_t.hpp"
 #include "Material.hpp"
 #include "Transform.hpp"
-#include "Model.hpp"
+//#include "Model.hpp"
+#include "Mesh.hpp"
 
 namespace av
 {
-	class Model;
+	class Mesh;
 
 	class SceneEntity
 	{
-		
 		Material* material = nullptr;
 		Transform transform;
-		Model* model = nullptr;
 		Vector4f color = { 1.0f,1.0f,1.0f,0.0f };
+		Mesh* mesh = nullptr;
 
 		//Matrix4f transform;
 
 		SceneEntity* parent = nullptr;
 		std::vector<SceneEntity*> children;
 	public:
-		SceneEntity(Model* p_model, Vector4f p_pos) : model(p_model) 
+		SceneEntity(Mesh* p_model, Vector3f p_pos) : mesh(p_model)
 		{
 			transform.SetPosition(p_pos);
 			UpdateTransform(); 
+		}
+
+		SceneEntity()
+		{
+
 		}
 
 		void Draw();
 		void UpdateTransform();
 		void UpdateUniforms();
 
+		Mesh* GetModel() { return mesh; }
+		void SetModel(Mesh* mod) { mesh = mod; }
+
 		Vector4f GetPosition() { return transform.GetPosition(); }
-		void SetPosition(Vector4f pos) { transform.SetPosition(pos); }
+		void SetPosition(Vector3f pos) { transform.SetPosition(pos); }
 
 		Vector3f GetRotation() { return transform.GetRotation(); }
 		void SetRotation(Vector3f rot) { transform.SetRotation(rot); }
@@ -48,4 +56,9 @@ namespace av
 		Material* GetMaterial() { return material; }
 		void SetMaterial(Material* mat) { material = mat; }
 	};
+
+	/*class MeshEntity : public SceneEntity
+	{
+		Model* mesh = nullptr;
+	};*/
 }

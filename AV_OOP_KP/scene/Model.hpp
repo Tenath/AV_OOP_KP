@@ -7,7 +7,7 @@
 
 namespace av
 {
-	class Model : BindableGLObject
+	class Model
 	{
 	public:
 		virtual ~Model() = 0;

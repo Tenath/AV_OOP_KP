@@ -20,8 +20,8 @@ namespace av
 
 		Matrix4f rotation_matrix;
 
-		GLuint rotation_uniform;
-		GLuint aspect_uniform;
+		GLuint rotation_uniform = 0;
+		GLuint aspect_uniform = 0;
 
 		float aspect_ratio = 1.0f;
 

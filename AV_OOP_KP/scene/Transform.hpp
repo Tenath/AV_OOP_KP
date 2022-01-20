@@ -15,7 +15,11 @@ namespace av
 
 	public:
 		Vector4f GetPosition() { return position; }
-		void SetPosition(Vector4f pos) { position = pos; UpdateTransform(); }
+		void SetPosition(Vector3f pos) 
+		{ 
+			position = Vector4f(pos.X(), pos.Y(), pos.Z(), 1.0f); 
+			UpdateTransform(); 
+		}
 
 		Vector3f GetRotation() { return rotation; }
 		void SetRotation(Vector3f rot) { rotation = rot; UpdateTransform(); }
@@ -28,7 +32,7 @@ namespace av
 		const Matrix4f& GetMatrix() { return matrix; }
 	};
 
-	Matrix4f GenerateTranslationMatrix4f(const Vector4f& vec);
-	Matrix4f GenerateRotationMatrix4f(float phi, float theta, float psi);
-	Matrix4f GenerateScaleMatrix4f(float scale);
+	extern Matrix4f GenerateTranslationMatrix4f(const Vector4f& vec);
+	extern Matrix4f GenerateRotationMatrix4f(float phi, float theta, float psi);
+	extern Matrix4f GenerateScaleMatrix4f(float scale);
 }
