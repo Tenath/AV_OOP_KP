@@ -72,5 +72,12 @@ namespace av
 
         // Отрисовка
         virtual void Draw();
+
+    public:
+        SDL_Window* GetWindow() { return window; }
+        void Exit() { running = false; }
+
+        unsigned GetWinWidth() { return WinWidth; }
+        unsigned GetWinHeight() { return WinHeight; }
     };
 }

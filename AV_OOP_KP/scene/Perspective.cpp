@@ -1,4 +1,6 @@
+#include <cmath>
 #include "Perspective.hpp"
+#include "../utils/Utils.hpp"
 
 namespace av
 {

@@ -2,7 +2,7 @@
 #pragma once
 #include <vector>
 #include "../math/av_camera.hpp"
-#include "SceneObject.hpp"
+#include "SceneEntity.hpp"
 #include "LightSource.hpp"
 #include "ObjectGroup.hpp"
 #include "Perspective.hpp"

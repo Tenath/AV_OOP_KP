@@ -144,6 +144,7 @@
     <ClCompile Include="app\Application.cpp" />
     <ClCompile Include="app\EditorApplication.cpp" />
     <ClCompile Include="app\GuiManager.cpp" />
+    <ClCompile Include="app\SceneManager.cpp" />
     <ClCompile Include="AV_OOP_KP.cpp" />
     <ClCompile Include="deps\src\imgui.cpp" />
     <ClCompile Include="deps\src\imgui_demo.cpp" />
@@ -152,14 +153,17 @@
     <ClCompile Include="deps\src\imgui_impl_sdl.cpp" />
     <ClCompile Include="deps\src\imgui_tables.cpp" />
     <ClCompile Include="deps\src\imgui_widgets.cpp" />
+    <ClCompile Include="globals.cpp" />
     <ClCompile Include="globj\Program.cpp" />
     <ClCompile Include="globj\Shader.cpp" />
     <ClCompile Include="globj\VertexArray.cpp" />
+    <ClCompile Include="primitives\DiamondBase.cpp" />
     <ClCompile Include="primitives\TriangleBase.cpp" />
     <ClCompile Include="scene\LightSource.cpp" />
     <ClCompile Include="scene\Material.cpp" />
     <ClCompile Include="scene\Mesh.cpp" />
     <ClCompile Include="scene\Model.cpp" />
+    <ClCompile Include="scene\Perspective.cpp" />
     <ClCompile Include="scene\SceneEntity.cpp" />
     <ClCompile Include="scene\Transform.cpp" />
     <ClCompile Include="utils\Utils.cpp" />
@@ -171,6 +175,7 @@
     <ClInclude Include="app\Application.hpp" />
     <ClInclude Include="app\EditorApplication.hpp" />
     <ClInclude Include="app\GuiManager.hpp" />
+    <ClInclude Include="app\SceneManager.hpp" />
     <ClInclude Include="globals.hpp" />
     <ClInclude Include="globj\BindableObject.hpp" />
     <ClInclude Include="globj\DrawSequence.hpp" />
@@ -183,6 +188,7 @@
     <ClInclude Include="math\av_matrix_t.hpp" />
     <ClInclude Include="math\av_polar.hpp" />
     <ClInclude Include="math\av_vector_t.hpp" />
+    <ClInclude Include="primitives\DiamondBase.hpp" />
     <ClInclude Include="primitives\PrimitiveBase.hpp" />
     <ClInclude Include="primitives\TriangleBase.hpp" />
     <ClInclude Include="scene\LightSource.hpp" />
@@ -190,6 +196,7 @@
     <ClInclude Include="scene\Mesh.hpp" />
     <ClInclude Include="scene\Model.hpp" />
     <ClInclude Include="scene\ObjectGroup.hpp" />
+    <ClInclude Include="scene\Perspective.hpp" />
     <ClInclude Include="scene\Scene.hpp" />
     <ClInclude Include="scene\SceneEntity.hpp" />
     <ClInclude Include="scene\SceneEntityBuilder.hpp" />

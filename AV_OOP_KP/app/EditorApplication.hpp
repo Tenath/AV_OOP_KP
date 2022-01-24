@@ -1,19 +1,24 @@
 #pragma once
-#include "Application.hpp"
-#include "GuiManager.hpp"
+#include <map>
 #include "../math/av_vector_t.hpp"
 #include "../math/av_matrix_t.hpp"
 #include "../globals.hpp"
 #include "../globj/Program.hpp"
 #include "../globj/VertexArray.hpp"
 #include "../globj/Vertex.hpp"
+#include "Application.hpp"
+#include "GuiManager.hpp"
+#include "SceneManager.hpp"
 
 namespace av
 {
+	class PrimitiveBase;
+
 	class EditorApplication : public Application 
 	{
 	private:
 		VertexArray<Vertex, ushort>* vertex_array = nullptr;
+		std::map<std::string, PrimitiveBase*> primitive_builders;
 		Program* program = nullptr;
 
 		Vector3f rotation;
@@ -26,22 +31,25 @@ namespace av
 		float aspect_ratio = 1.0f;
 
 		GuiManager gui;
+		SceneManager scene;
 
 		void RecomputeAspectRatio();
 	public:
 		void AppInit() override;
 
 		void HandleEvents() override;
+		void HandleKeyboard();
+		void HandleMouse();
 
 		void Process() override;
 
 		void Draw() override;
 
-		EditorApplication(int argc, char* argv[]) : Application(argc,argv)
-		{
-
-		}
+		EditorApplication(int argc, char* argv[]);
 
 		~EditorApplication();
+
+		GuiManager& GetGuiManager() { return gui; }
+		SceneManager& GetSceneManager() { return scene; }
 	};
 }

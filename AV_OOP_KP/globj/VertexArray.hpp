@@ -31,6 +31,8 @@ namespace av
 		std::vector<VertexT> vertices; // содержимое будет отправляться в VBO
 		std::vector<IndexT> indices; // содержимое будет отправляться в IBO
 
+		IndexT primitive_restart = 65535;
+
 		std::vector<DrawSequence<VertexT,IndexT>*> drawseq; // наборы примитивов для отрисовки
 
 		void SetupGLObjects();
@@ -96,6 +98,9 @@ namespace av
 				RegenerateAndUpdate();
 			}
 		}
+
+		IndexT GetPrimitiveRestart() { return primitive_restart; }
+		void SetPrimitiveRestart(IndexT value) { primitive_restart = value; }
 	};
 
 	template <typename VertexT, typename IndexT> 
@@ -206,6 +211,7 @@ namespace av
 		glBindVertexArray(va_handle);
 		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib_handle);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(IndexT) * indices.size(), indices.data(), GL_DYNAMIC_DRAW);
+		glPrimitiveRestartIndex(primitive_restart);
 		glBindVertexArray(0);
 		//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}

@@ -5,38 +5,13 @@
 #include "../scene/Mesh.hpp"
 
 #include "../primitives/TriangleBase.hpp"
+#include "../primitives/DiamondBase.hpp"
 
 #include <iostream>
+#include <imgui_impl_sdl.h>
 
 namespace av
 {
-	PrimitiveBase* tris = nullptr;
-
-	/*Mesh* BuildTriangleMesh()
-	{
-		std::vector<Vertex> vertices =
-		{
-			Vertex(Vector3f(-0.5f, -0.3f, 0.0f), Vector4f(1.0f,0.0f,0.0f,1.0f)),
-			Vertex(Vector3f(0.5f, -0.3f, 0.0f), Vector4f(0.0f,1.0f,0.0f,1.0f)),
-			Vertex(Vector3f(0.0f, 0.6f, 0.0f), Vector4f(0.0f,0.0f,1.0f,1.0f)),
-		};
-
-		std::vector<ushort> indices = { 0,1,2 };
-
-		PrimitiveType type = PrimitiveType::Triangles;
-
-		Mesh* tri_mesh = new Mesh(
-			"triangle",
-			vertices,
-			indices,
-			PrimitiveType::Triangles,
-			nullptr,
-			nullptr
-		);
-
-		return tri_mesh;
-	}*/
-
 	Mesh* BuildCubeMesh()
 	{
 		std::vector<Vertex> vertices =
@@ -58,6 +33,12 @@ namespace av
 	Material* material = nullptr;
 
 	SceneEntity* entity = nullptr;
+
+	EditorApplication::EditorApplication(int argc, char* argv[])
+		: Application(argc, argv), gui(this)
+	{
+
+	}
 
 	void EditorApplication::RecomputeAspectRatio()
 	{
@@ -82,10 +63,9 @@ namespace av
 
 		RecomputeAspectRatio();
 		vertex_array = new VertexArray<Vertex, ushort>();
-		tris = new TriangleBase(*vertex_array);
-
-		//triangle_mesh->SetupVertexArray(*vertex_array);
-
+		
+		primitive_builders["Triangle"] = new TriangleBase(*vertex_array);
+		primitive_builders["Diamond"] = new DiamondBase(*vertex_array);
 
 		rotation_uniform = glGetUniformLocation(program->GetHandle(), "rm");
 		aspect_uniform = glGetUniformLocation(program->GetHandle(), "aspect_ratio");
@@ -98,7 +78,7 @@ namespace av
 		glUniform1fv(aspect_uniform, 1, &aspect_ratio);
 		glUniformMatrix4fv(rotation_uniform, 1, false, rotation_matrix.data);
 		
-		entity = tris->Build()
+		entity = primitive_builders["Diamond"]->Build()
 			.Position(Vector3f(0.3f, 0.5f, 0.2f))
 			.Rotate(Vector3f(0.2f, 0.0f, 0.0f))
 			.WithColor(Vector4f(0.5f, 0.5f, 0.0f, 1.0f))
@@ -111,16 +91,25 @@ namespace av
 	EditorApplication::~EditorApplication()
 	{
 		delete entity;
-		delete tris;
+
+		for (auto entry : primitive_builders)
+		{
+			delete entry.second;
+		}
+
 		delete vertex_array;
 		delete material;
 		delete program;
+
+		primitive_builders.clear();
 	}
 
 	void EditorApplication::HandleEvents()
 	{
 		while (SDL_PollEvent(&evt))
 		{
+			ImGui_ImplSDL2_ProcessEvent(&evt);
+
 			switch (evt.type)
 			{
 			case SDL_QUIT:
@@ -131,14 +120,47 @@ namespace av
 			}
 		}
 
+		ImGuiIO& io = ImGui::GetIO();
+		if (!io.WantCaptureKeyboard) { HandleKeyboard(); }
+		if (!io.WantCaptureMouse) { HandleMouse(); }
+	}
+
+	void EditorApplication::Process()
+	{
+		rotation_matrix = GenerateRotationMatrix4f(rotation.X(), rotation.Y(), rotation.Z());
+	}
+
+	void EditorApplication::Draw()
+	{
+		// Заливка задника цветом, "обнуление" (или, если хотите, "объединичивание") глубинного буффера
+		glClearColor(0.0f, 0.0f, 0.3f, 0.0f);
+		glClearDepth(1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		//Application::Draw();
+		vertex_array->Bind();
+		program->Bind();
+		glUniformMatrix4fv(rotation_uniform, 1, false, rotation_matrix.data);
+		
+		entity->Draw();
+		//vertex_array->Draw(0);
+
+		vertex_array->Unbind();
+		program->Unbind();
+
+		gui.DrawGui();
+	}
+
+	void EditorApplication::HandleKeyboard()
+	{
 		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_W]) { rotation.X() += 0.02f; }
 		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_S]) { rotation.X() -= 0.02f; }
 		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_A]) { rotation.Y() += 0.02f; }
 		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_D]) { rotation.Y() -= 0.02f; }
 		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_Q]) { rotation.Z() += 0.02f; }
 		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_E]) { rotation.Z() -= 0.02f; }
-		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_BACKSPACE]) 
-		{ 
+		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_BACKSPACE])
+		{
 			rotation.X() = 0.0f;
 			rotation.Y() = 0.0f;
 			rotation.Z() = 0.0f;
@@ -150,23 +172,8 @@ namespace av
 			int n = 1;
 		}
 	}
-
-	void EditorApplication::Process()
+	void EditorApplication::HandleMouse()
 	{
-		rotation_matrix = GenerateRotationMatrix4f(rotation.X(), rotation.Y(), rotation.Z());
-	}
 
-	void EditorApplication::Draw()
-	{
-		Application::Draw();
-		vertex_array->Bind();
-		program->Bind();
-		glUniformMatrix4fv(rotation_uniform, 1, false, rotation_matrix.data);
-		
-		entity->Draw();
-		//vertex_array->Draw(0);
-
-		vertex_array->Unbind();
-		program->Unbind();
 	}
 }
