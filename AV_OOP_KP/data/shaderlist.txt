@@ -1,2 +1,3 @@
-data/vertex.glsl,Vertex
-data/fragment.glsl,Fragment
+data/shaders/wireframe_vertex.vs,Vertex
+data/shaders/wireframe_geometry.gs,Geometry
+data/shaders/wireframe_fragment.fs,Fragment

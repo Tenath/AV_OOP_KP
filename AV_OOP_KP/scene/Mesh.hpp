@@ -13,7 +13,7 @@ namespace av
 {
 	// Mesh = vertices + indices
 	// can be attached to VertexArray
-	class Mesh
+	class Mesh : public Model
 	{
 		std::string name;
 		VertexGroup<Vertex>* vertices = nullptr;
@@ -50,7 +50,7 @@ namespace av
 			if (varray != nullptr) SetupVertexArray(*varray);
 		}
 
-		~Mesh()
+		~Mesh() override
 		{
 			CleanupVA();
 			if (ds != nullptr) delete ds;
@@ -66,13 +66,13 @@ namespace av
 			//va_ptr = VertexArrayPointer<Vertex, ushort>::Setup(va, *vertices, *indices);
 		}
 
-		void Bind()
+		void Bind() override
 		{
 			if(material != nullptr) material->GetProgram()->Bind();
 			if (va != nullptr) va->Bind();
 		}
 
-		void Draw()
+		void Draw() override
 		{
 			if (ds != nullptr)
 			{

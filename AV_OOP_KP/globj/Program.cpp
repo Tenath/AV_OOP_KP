@@ -6,6 +6,7 @@ namespace av
 {
 	Program::Program(const std::string& slist_file)
 	{
+		owner = true;
 		handle = glCreateProgram();
 
 		auto shaderlist = ShaderFile::LoadShaderList(slist_file);
@@ -13,15 +14,41 @@ namespace av
 		for (ShaderFile& s : shaderlist)
 		{
 			std::string src = ReadTextFile(s.filename);
-			shaders.emplace_back(Shader(src, s.type));
+			shaders.push_back(new Shader(src, s.type));
 		}
 
 		Build();
 	}
 
+	Program::Program()
+	{
+		handle = glCreateProgram();
+	}
+
+	void Program::AttachShader(Shader* shader)
+	{
+		if (owner)
+		{
+			throw std::logic_error("Program is in self-contained mode. \
+				No new shaders can be attached manually");
+		}
+
+		if (VectorContains(shaders, shader)) throw std::exception(
+			"Attempting to attach a duplicate shader to program");
+
+		shaders.push_back(shader);
+	}
+
 	Program::~Program()
 	{
 		if (handle != 0) glDeleteProgram(handle);
+		if (owner)
+		{
+			for (Shader* s : shaders)
+			{
+				delete s;
+			}
+		}
 	}
 
 	void Program::Bind() { glUseProgram(handle); }
@@ -30,7 +57,7 @@ namespace av
 	void Program::Build()
 	{
 		linked = false;
-		for (Shader& s : shaders) glAttachShader(handle, s.GetHandle());
+		for (Shader* s : shaders) glAttachShader(handle, s->GetHandle());
 
 		glLinkProgram(handle);
 
@@ -49,7 +76,7 @@ namespace av
 		}
 
 		linked = true;
-		for (Shader& s : shaders) glDetachShader(handle, s.GetHandle());
+		for (Shader* s : shaders) glDetachShader(handle, s->GetHandle());
 	}
 
 	void Program::BuildUniformList()

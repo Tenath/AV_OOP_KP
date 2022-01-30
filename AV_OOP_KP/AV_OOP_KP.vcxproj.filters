@@ -93,6 +93,9 @@
     <ClCompile Include="scene\Perspective.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="app\AppResources.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -143,9 +146,6 @@
     <ClInclude Include="scene\Material.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scene\Model.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="scene\ObjectGroup.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -189,6 +189,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scene\Perspective.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="app\AppResources.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Model.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

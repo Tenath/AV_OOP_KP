@@ -21,16 +21,20 @@ namespace av
 	{
 	private:
 		GLuint handle = 0;
-		std::vector<Shader> shaders;
+		std::vector<Shader*> shaders;
 		std::string error;
 		bool linked = false;
+		bool owner = false;
 
 		std::map<std::string, Uniform> uniforms;
 
-		void Build();
 	public:
+		void Build();
 		Program(const std::string& slist_file);
+		Program();
 		~Program();
+
+		void AttachShader(Shader* shader);
 
 		void Bind() override;
 		void Unbind() override;

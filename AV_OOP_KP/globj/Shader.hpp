@@ -49,5 +49,9 @@ namespace av
 		~Shader();
 
 		GLuint GetHandle() { return handle; }
+
+		static ShaderType ParseType(const std::string& str);
 	};
+
+	
 }

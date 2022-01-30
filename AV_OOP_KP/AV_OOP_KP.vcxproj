@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="app\Application.cpp" />
+    <ClCompile Include="app\AppResources.cpp" />
     <ClCompile Include="app\EditorApplication.cpp" />
     <ClCompile Include="app\GuiManager.cpp" />
     <ClCompile Include="app\SceneManager.cpp" />
@@ -173,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app\Application.hpp" />
+    <ClInclude Include="app\AppResources.hpp" />
     <ClInclude Include="app\EditorApplication.hpp" />
     <ClInclude Include="app\GuiManager.hpp" />
     <ClInclude Include="app\SceneManager.hpp" />

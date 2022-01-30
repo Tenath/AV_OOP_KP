@@ -9,10 +9,12 @@
 #include "Application.hpp"
 #include "GuiManager.hpp"
 #include "SceneManager.hpp"
+#include "AppResources.hpp"
 
 namespace av
 {
 	class PrimitiveBase;
+	class AppResources;
 
 	class EditorApplication : public Application 
 	{
@@ -32,6 +34,7 @@ namespace av
 
 		GuiManager gui;
 		SceneManager scene;
+		AppResources resources;
 
 		void RecomputeAspectRatio();
 	public:

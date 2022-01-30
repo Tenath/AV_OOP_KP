@@ -18,7 +18,7 @@ namespace av
 			temp.obj = nullptr;
 		}
 
-		SceneEntityBuilder& operator=(SceneEntityBuilder&& temp)
+		SceneEntityBuilder& operator=(SceneEntityBuilder&& temp) noexcept
 		{
 			this->obj = temp.obj;
 			temp.obj = nullptr;

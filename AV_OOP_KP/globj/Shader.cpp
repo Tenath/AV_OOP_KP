@@ -4,7 +4,7 @@
 
 namespace av
 {
-	ShaderType ParseShaderType(const std::string& str)
+	ShaderType Shader::ParseType(const std::string& str)
 	{
 		ShaderType result = ShaderType::Undefined;
 
@@ -42,7 +42,7 @@ namespace av
 		for (std::string& line : lines)
 		{
 			auto parts = StringSplit(line, ',');
-			ShaderFile sf(parts[0], ParseShaderType(parts[1]));
+			ShaderFile sf(parts[0], Shader::ParseType(parts[1]));
 			result.push_back(sf);
 		}
 

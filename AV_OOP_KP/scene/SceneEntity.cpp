@@ -7,7 +7,12 @@ namespace av
 	{
 		UpdateUniforms();
 		if (material != nullptr) material->UpdateUniforms();
-		mesh->Draw();
+		model->Draw();
+	}
+
+	void SceneEntity::UpdateTransform()
+	{
+		transform.UpdateTransform();
 	}
 
 	void SceneEntity::UpdateUniforms()

@@ -1,5 +1,6 @@
 #include <vector>
 #include "EditorApplication.hpp"
+#include "AppResources.hpp"
 #include "../globj/Vertex.hpp"
 #include "../scene/Transform.hpp"
 #include "../scene/Mesh.hpp"
@@ -48,9 +49,11 @@ namespace av
 	void EditorApplication::AppInit()
 	{
 		Application::AppInit();
+		resources.LoadResources();
 
 		SetTargetFPS(144);
-		program = new Program("data/shaderlist.txt");
+		//program = new Program("data/shaderlist.txt");
+		program = resources.GetProgram("Wireframe");
 
 		if (!program->IsBuilt())
 		{
@@ -86,6 +89,15 @@ namespace av
 			.Finish();
 
 		program->Unbind();
+
+		glEnable(GL_DEPTH_TEST);
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LEQUAL);
+		glDepthRange(0.0f, 1.0f);
+
+		//glDisable(GL_DEPTH_TEST);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	EditorApplication::~EditorApplication()
@@ -99,7 +111,7 @@ namespace av
 
 		delete vertex_array;
 		delete material;
-		delete program;
+		//delete program;
 
 		primitive_builders.clear();
 	}
