@@ -122,6 +122,23 @@ namespace av
 	{
 		ImGui::Begin("Entity List", &ShowEntityListWindow);
 		
+		if (ImGui::TreeNode("Scene Entities"))
+		{
+			auto objects = App->GetSceneManager().GetScene()->GetObjects();
+			const char* fmt = "%d: %s";
+
+			for (size_t i = 0; i < objects.size(); i++)
+			{
+				std::string name = "entity_" + std::to_string(i);
+
+				if (ImGui::TreeNode(name.c_str(), fmt, i+1, objects[i]->GetName().c_str()))
+				{
+					ImGui::TreePop();
+				}
+			}
+			ImGui::TreePop();
+		}
+
 		ImGui::End();
 	}
 

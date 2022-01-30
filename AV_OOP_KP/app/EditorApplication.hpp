@@ -54,5 +54,7 @@ namespace av
 
 		GuiManager& GetGuiManager() { return gui; }
 		SceneManager& GetSceneManager() { return scene; }
+
+		void ResetCameraPosition();
 	};
 }

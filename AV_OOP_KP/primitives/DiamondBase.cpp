@@ -70,6 +70,7 @@ namespace av
 	{
 		SceneEntityBuilder sb;
 		sb.WithMesh(*GetBaseMesh());
+		sb.WithName("Diamond #"+std::to_string(++counter));
 		return sb;
 	}
 }

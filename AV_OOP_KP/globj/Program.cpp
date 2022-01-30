@@ -76,6 +76,7 @@ namespace av
 		}
 
 		linked = true;
+		BuildUniformList();
 		for (Shader* s : shaders) glDetachShader(handle, s->GetHandle());
 	}
 
@@ -98,6 +99,7 @@ namespace av
 			uf.Index = i;
 			glGetActiveUniform(handle, i, buf_size, nullptr, &uf.Size, &uf.Type, uniform_name.data());
 			uf.Name.assign(uniform_name.data());
+			uf.Location = glGetUniformLocation(handle, uf.Name.c_str());
 			uniforms[uf.Name] = uf;
 		}
 	}
@@ -109,7 +111,7 @@ namespace av
 	{
 		if (uniforms.find(uniform) == uniforms.end()) return false;
 
-		func(uniforms[uniform].Index);
+		func(uniforms[uniform].Location);
 		return true;
 	}
 }

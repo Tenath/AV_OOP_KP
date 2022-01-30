@@ -7,29 +7,14 @@
 
 #include "../primitives/TriangleBase.hpp"
 #include "../primitives/DiamondBase.hpp"
+#include "../primitives/TetrahedronBase.hpp"
+#include "../primitives/CubeBase.hpp"
 
 #include <iostream>
 #include <imgui_impl_sdl.h>
 
 namespace av
 {
-	Mesh* BuildCubeMesh()
-	{
-		std::vector<Vertex> vertices =
-		{
-			Vertex(Vector3f(-1.0f, -1.0f, -1.0f), Vector4f(1.0f,1.0f,1.0f, 1.0f)),
-			Vertex(Vector3f(-1.0f, -1.0f, 1.0f), Vector4f(1.0f,1.0f,1.0f, 1.0f)),
-			Vertex(Vector3f(-1.0f, 1.0f, -1.0f), Vector4f(1.0f,1.0f,1.0f, 1.0f)),
-			Vertex(Vector3f(-1.0f, 1.0f, 1.0f), Vector4f(1.0f,1.0f,1.0f, 1.0f)),
-			Vertex(Vector3f(1.0f, -1.0f, -1.0f), Vector4f(1.0f,1.0f,1.0f, 1.0f)),
-			Vertex(Vector3f(1.0f, -1.0f, 1.0f), Vector4f(1.0f,1.0f,1.0f, 1.0f)),
-			Vertex(Vector3f(1.0f, 1.0f, -1.0f), Vector4f(1.0f,1.0f,1.0f, 1.0f)),
-			Vertex(Vector3f(1.0f, 1.0f, 1.0f), Vector4f(1.0f,1.0f,1.0f, 1.0f)),
-		};
-
-		return nullptr;
-	}
-
 	//Mesh* triangle_mesh = nullptr;
 	Material* material = nullptr;
 
@@ -44,6 +29,17 @@ namespace av
 	void EditorApplication::RecomputeAspectRatio()
 	{
 		aspect_ratio = WinWidth / (float)WinHeight;
+	}
+
+	void EditorApplication::ResetCameraPosition()
+	{
+		Scene& s = *scene.GetScene();
+
+		Camera& cam = s.GetCamera();
+		cam.ShiftFocus({ 0.0f,0.0f,0.0f });
+		cam.CamSetDistance(3.0f);
+		cam.CamSetHorizontal(PI / 4);
+		cam.CamSetVertical(PI / 4);
 	}
 
 	void EditorApplication::AppInit()
@@ -69,6 +65,8 @@ namespace av
 		
 		primitive_builders["Triangle"] = new TriangleBase(*vertex_array);
 		primitive_builders["Diamond"] = new DiamondBase(*vertex_array);
+		primitive_builders["Tetrahedron"] = new TetrahedronBase(*vertex_array);
+		primitive_builders["Cube"] = new CubeBase(*vertex_array);
 
 		rotation_uniform = glGetUniformLocation(program->GetHandle(), "rm");
 		aspect_uniform = glGetUniformLocation(program->GetHandle(), "aspect_ratio");
@@ -81,19 +79,50 @@ namespace av
 		glUniform1fv(aspect_uniform, 1, &aspect_ratio);
 		glUniformMatrix4fv(rotation_uniform, 1, false, rotation_matrix.data);
 		
-		entity = primitive_builders["Diamond"]->Build()
-			.Position(Vector3f(0.3f, 0.5f, 0.2f))
-			.Rotate(Vector3f(0.2f, 0.0f, 0.0f))
-			.WithColor(Vector4f(0.5f, 0.5f, 0.0f, 1.0f))
+		entity = primitive_builders["Tetrahedron"]->Build()
+			.Position(Vector3f(0.0f, 0.0f, 0.0f))
+			.Rotate(Vector3f(0.0f, 0.0f, 0.0f))
+			.Scale(0.4f)
+			.WithColor(Vector4f(0.9f, 0.3f, 0.0f, 1.0f))
 			.WithMaterial(*material)
+			.OnScene(scene.GetScene())
 			.Finish();
 
-		program->Unbind();
+		entity = primitive_builders["Triangle"]->Build()
+			.Position(Vector3f(0.5f, 0.0f, 0.0f))
+			.Rotate(Vector3f(0.0f, 0.0f, 0.0f))
+			.Scale(0.5f)
+			.WithColor(Vector4f(0.7f, 0.8f, 0.4f, 1.0f))
+			.WithMaterial(*material)
+			.OnScene(scene.GetScene())
+			.Finish();
 
-		glEnable(GL_DEPTH_TEST);
+		entity = primitive_builders["Diamond"]->Build()
+			.Position(Vector3f(0.0f, 0.0f, 0.5f))
+			.Rotate(Vector3f(0.0f, 0.0f, 0.0f))
+			.Scale(0.5f)
+			.WithColor(Vector4f(0.0f, 0.8f, 0.8f, 1.0f))
+			.WithMaterial(*material)
+			.OnScene(scene.GetScene())
+			.Finish();
+
+		entity = primitive_builders["Cube"]->Build()
+			.Position(Vector3f(-0.5f, 0.0f, -0.5f))
+			.Rotate(Vector3f(0.0f, 0.0f, 0.0f))
+			.Scale(0.25f)
+			.WithColor(Vector4f(0.2f, 0.8f, 0.4f, 1.0f))
+			.WithMaterial(*material)
+			.OnScene(scene.GetScene())
+			.Finish();
+
+		//program->Unbind();
+
+		ResetCameraPosition();
+
+		/*glEnable(GL_DEPTH_TEST);
 		glDepthMask(GL_TRUE);
 		glDepthFunc(GL_LEQUAL);
-		glDepthRange(0.0f, 1.0f);
+		glDepthRange(0.0f, 1.0f);*/
 
 		//glDisable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
@@ -150,7 +179,7 @@ namespace av
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//Application::Draw();
-		vertex_array->Bind();
+		/*vertex_array->Bind();
 		program->Bind();
 		glUniformMatrix4fv(rotation_uniform, 1, false, rotation_matrix.data);
 		
@@ -158,14 +187,15 @@ namespace av
 		//vertex_array->Draw(0);
 
 		vertex_array->Unbind();
-		program->Unbind();
+		program->Unbind();*/
 
+		scene.Draw();
 		gui.DrawGui();
 	}
 
 	void EditorApplication::HandleKeyboard()
 	{
-		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_W]) { rotation.X() += 0.02f; }
+		/*if (SDL_GetKeyboardState(0)[SDL_SCANCODE_W]) { rotation.X() += 0.02f; }
 		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_S]) { rotation.X() -= 0.02f; }
 		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_A]) { rotation.Y() += 0.02f; }
 		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_D]) { rotation.Y() -= 0.02f; }
@@ -176,11 +206,37 @@ namespace av
 			rotation.X() = 0.0f;
 			rotation.Y() = 0.0f;
 			rotation.Z() = 0.0f;
-		}
-		if (SDL_GetKeyboardState(0)[SDL_SCANCODE_RETURN])
+		}*/
+		const Uint8* keys = SDL_GetKeyboardState(nullptr);
+
+		Scene* world = scene.GetScene();
+
+		if (keys[SDL_SCANCODE_A]) { world->GetCamera().SidestepFocus(-0.1f); }
+		if (keys[SDL_SCANCODE_D]) { world->GetCamera().SidestepFocus(0.1f); }
+		if (keys[SDL_SCANCODE_W]) { world->GetCamera().AdvanceFocus(-0.1f); }
+		if (keys[SDL_SCANCODE_S]) { world->GetCamera().AdvanceFocus(0.1f); }
+		if (keys[SDL_SCANCODE_KP_PLUS]) { world->GetCamera().CamChangeDistance(-0.1f); }
+		if (keys[SDL_SCANCODE_KP_MINUS]) { world->GetCamera().CamChangeDistance(0.1f); }
+		if (keys[SDL_SCANCODE_BACKSPACE]) { ResetCameraPosition(); }
+
+		if (keys[SDL_SCANCODE_UP]) { world->GetCamera().CamRotateVertical(0.05f); }
+		if (keys[SDL_SCANCODE_DOWN]) { world->GetCamera().CamRotateVertical(-0.05f); }
+		if (keys[SDL_SCANCODE_LEFT]) { world->GetCamera().CamRotateHorizontal(0.05f); }
+		if (keys[SDL_SCANCODE_RIGHT]) { world->GetCamera().CamRotateHorizontal(-0.05f); }
+
+		if (keys[SDL_SCANCODE_RETURN])
 		{
 			Matrix4f rot;
-			glGetnUniformfv(program->GetHandle(), program->GetUniform("rm").Index, 16, rot.data);
+			glGetnUniformfv(program->GetHandle(), program->GetUniform("model_matrix").Location, 16, rot.data);
+			/*for (auto entry : program->GetUniforms())
+			{
+				switch (entry.second.Type)
+				{
+
+				}
+				
+			}*/
+			
 			int n = 1;
 		}
 	}

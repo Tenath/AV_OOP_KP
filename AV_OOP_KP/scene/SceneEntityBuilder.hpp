@@ -40,6 +40,13 @@ namespace av
 			if (obj != nullptr) delete obj;
 		}
 
+		SceneEntityBuilder& WithName(const std::string& name)
+		{
+			if (obj == nullptr) Begin();
+			obj->SetName(name);
+			return *this;
+		}
+
 		SceneEntityBuilder& WithMesh(Mesh& mesh)
 		{
 			if (obj == nullptr) Begin();
@@ -79,6 +86,13 @@ namespace av
 		{
 			if (obj == nullptr) Begin();
 			obj->SetColor(color);
+			return *this;
+		}
+
+		SceneEntityBuilder& OnScene(Scene* scene)
+		{
+			if (obj == nullptr) Begin();
+			obj->SetScene(scene);
 			return *this;
 		}
 

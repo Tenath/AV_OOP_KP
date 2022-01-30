@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "../scene/Scene.hpp"
 
 namespace av
 {
@@ -26,5 +27,6 @@ namespace av
 
 		std::string GetActiveFile() { return filename; }
 		Scene* GetScene() { return current_scene; }
+		void Draw() { if (current_scene != nullptr) current_scene->Draw(); }
 	};
 }

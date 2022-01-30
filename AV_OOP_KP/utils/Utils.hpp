@@ -13,6 +13,16 @@ namespace av
 	std::vector<std::string> ReadTextFileLines(const std::string& filename);
 	std::vector<std::string> StringSplit(const std::string& str, char delimiter = ' ');
 
+	template <typename T> inline size_t VectorFindIndex(const std::vector<T>& vec, const T& value)
+	{
+		for (size_t i = 0; i < vec.size(); i++)
+		{
+			if (vec[i] == value) return i;
+		}
+
+		return -1;
+	}
+
 	template <typename T> inline bool VectorContains(const std::vector<T>& vec, const T& value)
 	{
 		return std::find(vec.begin(), vec.end(), value) != vec.end();

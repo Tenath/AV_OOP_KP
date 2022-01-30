@@ -12,6 +12,7 @@ namespace av
 	struct Uniform
 	{
 		GLuint Index = 0;
+		GLint Location = 0;
 		std::string Name;
 		GLint Size = 0;
 		GLenum Type = GL_NONE;
@@ -48,5 +49,7 @@ namespace av
 		bool UpdateUniform(const std::string& uniform, const std::function<void(GLuint)>& func);
 
 		Uniform GetUniform(const std::string& name) { return uniforms[name]; }
+
+		std::map<std::string, Uniform>& GetUniforms() { return uniforms; }
 	};
 }

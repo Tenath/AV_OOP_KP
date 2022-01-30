@@ -6,6 +6,7 @@ namespace av
 	class TriangleBase : public PrimitiveBase
 	{
 		Mesh* mesh=nullptr;
+		size_t counter = 0;
 	public:
 		TriangleBase(VertexArray<Vertex, ushort>& va) : PrimitiveBase(va) {}
 

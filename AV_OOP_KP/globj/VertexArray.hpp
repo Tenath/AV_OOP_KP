@@ -158,7 +158,8 @@ namespace av
 	{
 		indices.clear();
 		indices.reserve(TotalIndexCount());
-		size_t offset = 0;
+		size_t byte_offset = 0;
+		IndexT vertex_offset = 0;
 
 		for (DrawSequence<VertexT,IndexT>* seq : drawseq)
 		{
@@ -167,10 +168,12 @@ namespace av
 			for (IndexT& n : seq->GetIndexGroup()->GetIndices())
 			{
 				//n += static_cast<IndexT>(seq->GetVertexOffset());
-				indices.push_back(n);
+				if (n == primitive_restart) indices.push_back(n);
+				else indices.push_back(n + vertex_offset);
 			}
-			seq->SetIndexOffset(offset);
-			offset += seq->GetIndexGroup()->GetIndices().size() * sizeof(IndexT);
+			seq->SetIndexOffset(byte_offset);
+			byte_offset += seq->GetIndexGroup()->GetIndices().size() * sizeof(IndexT);
+			vertex_offset += seq->GetVertexGroup()->GetVertices().size();
 		}
 	}
 
@@ -188,7 +191,7 @@ namespace av
 				seq->GetVertexGroup()->GetVertices().begin(), 
 				seq->GetVertexGroup()->GetVertices().end());
 			seq->SetVertexOffset(offset);
-			offset += seq->GetVertexGroup()->GetVertices().size() * sizeof(VertexT);
+			offset += seq->GetVertexGroup()->GetVertices().size()/* * sizeof(VertexT)*/;
 		}
 	}
 
@@ -210,6 +213,7 @@ namespace av
 	{
 		glBindVertexArray(va_handle);
 		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib_handle);
+		size_t buf_size = sizeof(IndexT) * indices.size();
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(IndexT) * indices.size(), indices.data(), GL_DYNAMIC_DRAW);
 		glPrimitiveRestartIndex(primitive_restart);
 		glBindVertexArray(0);

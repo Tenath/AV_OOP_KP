@@ -10,13 +10,17 @@
 namespace av
 {
 	class Model;
+	class Scene;
 
 	class SceneEntity
 	{
+		std::string name;
+
 		Material* material = nullptr;
 		Transform transform;
 		Vector4f color = { 1.0f,1.0f,1.0f,0.0f };
 		Model* model = nullptr;
+		Scene* scene = nullptr;
 
 		//Matrix4f transform;
 
@@ -38,6 +42,9 @@ namespace av
 		void UpdateTransform();
 		void UpdateUniforms();
 
+		std::string GetName() { return name; }
+		void SetName(const std::string& p_name) { name = p_name; }
+
 		Model* GetModel() { return model; }
 		void SetModel(Model* mod) { model = mod; }
 
@@ -55,5 +62,8 @@ namespace av
 
 		Material* GetMaterial() { return material; }
 		void SetMaterial(Material* mat) { material = mat; }
+
+		Scene* GetScene() { return scene; }
+		void SetScene(Scene* sc);
 	};
 }

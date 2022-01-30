@@ -3,12 +3,12 @@
 
 namespace av
 {
-	class DiamondBase : public PrimitiveBase
+	class CubeBase : public PrimitiveBase
 	{
 		Mesh* mesh = nullptr;
 		size_t counter = 0;
 	public:
-		DiamondBase(VertexArray<Vertex, ushort>& va) : PrimitiveBase(va) {}
+		CubeBase(VertexArray<Vertex, ushort>& va) : PrimitiveBase(va) {}
 
 		Mesh* GenerateMesh() override;
 		SceneEntityBuilder Build() override;

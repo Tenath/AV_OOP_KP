@@ -21,7 +21,7 @@ namespace av
 		program->UpdateUniform("material.shininess",
 			[&](GLuint u) { glUniform1fv(u, 1, &Shininess); });
 
-		program->Unbind();
+		//program->Unbind();
 	}
 
 	Program* Material::GetProgram() { return program; }

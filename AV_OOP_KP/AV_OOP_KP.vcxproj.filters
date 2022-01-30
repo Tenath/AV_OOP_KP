@@ -96,6 +96,18 @@
     <ClCompile Include="app\AppResources.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scene\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\TestSceneDirector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="primitives\TetrahedronBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="primitives\CubeBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -195,6 +207,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scene\Model.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\TestSceneDirector.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\PrimitiveRepository.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\TetrahedronBase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\Context.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="primitives\CubeBase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

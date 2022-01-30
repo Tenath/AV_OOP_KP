@@ -33,6 +33,7 @@ namespace av
 	{
 		SceneEntityBuilder sb;
 		sb.WithMesh(*GetBaseMesh());
+		sb.WithName("Triangle #" + std::to_string(++counter));
 		return sb;
 	}
 }

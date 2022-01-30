@@ -27,7 +27,9 @@ namespace av
 
 		void Draw()
 		{
-			UpdateView();
+			cam.UpdateViewMatrix();
+			perspective.UpdateProjection();
+			//UpdateView();
 			UpdateLightSourceUniforms();
 			for (SceneEntity* obj : objects) obj->Draw();
 		}
@@ -36,6 +38,11 @@ namespace av
 		{
 			if (obj == nullptr) throw std::exception("Attempting to add a null object to World");
 			objects.push_back(obj);
+		}
+
+		void RemoveObject(SceneEntity* obj)
+		{
+			
 		}
 
 		void AddLightSource(LightSource* ls)
@@ -51,9 +58,12 @@ namespace av
 			obj_groups.push_back(objgr);
 		}
 
+		void RecomputeView();
+		void RecomputeProjection();
+
 		void UpdateLightSourceUniforms();
-		void UpdateView();
-		void UpdateProjection();
+		void UpdateView(Program& prog);
+		void UpdateProjection(Program& prog);
 
 		Camera& GetCamera() noexcept { return cam; }
 		Perspective& GetPerspective() noexcept { return perspective; }

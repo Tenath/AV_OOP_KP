@@ -4,7 +4,6 @@ layout(location = 0) in vec4 position;
 layout(location = 1) in vec3 normal;
 layout(location = 2) in vec4 color;
 
-uniform mat3 rm;
 uniform float aspect_ratio;
 uniform float scale;
 uniform mat4 model_matrix;
@@ -20,6 +19,7 @@ void main()
 	mat4 mvp_matrix = projection_matrix*view_matrix*model_matrix;
 	gl_Position = mvp_matrix * pos;
 	
+	//gl_Position.x = gl_Position.x/aspect_ratio;
 	/*vec3 rotated = rm * position;
 
     gl_Position.x = scale*rotated.x/aspect_ratio;
