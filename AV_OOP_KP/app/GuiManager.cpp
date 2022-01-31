@@ -4,11 +4,12 @@
 #include "imgui_impl_sdl.h"
 #include "imgui_stdlib.h"
 #include "EditorApplication.hpp"
+#include "../scene/PrimitiveGenerator.hpp"
 
 namespace av
 {
 	GuiManager::GuiManager(EditorApplication* p_app) 
-		: App(p_app) {}
+		: App(p_app), DummyEntity(new SceneEntity()) {}
 
 	void GuiManager::DrawGui()
 	{
@@ -28,6 +29,7 @@ namespace av
 		if (ShowImGuiDemo) ImGui::ShowDemoWindow(&ShowImGuiDemo);
 		if (ShowEntityListWindow) DrawEntityList();
 		if (ShowPropertyWindow) DrawPropertyWindow();
+		if (ShowToolbox) DrawToolbox();
 		if (ShowMinimap) DrawMinimap();
 	}
 
@@ -64,6 +66,7 @@ namespace av
 			if (ImGui::BeginMenu("View"))
 			{
 				if (ImGui::MenuItem("Entity List")) ShowEntityListWindow = true;
+				if (ImGui::MenuItem("Toolbox")) ShowToolbox = true;
 				if (ImGui::MenuItem("Property Window")) ShowPropertyWindow = true;
 				if (ImGui::MenuItem("Minimap")) ShowMinimap = true;
 				ImGui::Separator();
@@ -211,9 +214,106 @@ namespace av
 	{
 		ImGui::Begin("Toolbox", &ShowToolbox);
 
+		if (PrimitiveNames.empty())
+		{
+			PrimitiveNames = App->GetPrimitiveGenerator().GetPrimitiveNames();
+		}
 
+		ImGui::SetNextItemOpen(true);
+		if (ImGui::TreeNode("Primitive Type"))
+		{
+			int ctr = 0;
+			for (const std::string& prim : PrimitiveNames)
+			{
+				ImGui::RadioButton(prim.c_str(), &PrimitiveIndex, ++ctr);
+			}
+			ImGui::TreePop();
+		}
+		if (ImGui::TreeNode("new_entity_props","Properties"))
+		{
+			if (ImGui::TreeNode("new_entity_pos", "Position: ")) { ImGui::TreePop(); }
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			if (ImGui::InputFloat("x", &DummyEntity->GetTransform().GetPosition().X(), 0.01f, 0.1f))
+			{
+				DummyEntity->UpdateTransform();
+			}
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			if (ImGui::InputFloat("y", &DummyEntity->GetTransform().GetPosition().Y(), 0.01f, 0.1f))
+			{
+				DummyEntity->UpdateTransform();
+			}
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			if (ImGui::InputFloat("z", &DummyEntity->GetTransform().GetPosition().Z(), 0.01f, 0.1f))
+			{
+				DummyEntity->UpdateTransform();
+			}
 
+			if (ImGui::TreeNode("new_entity_rot", "Rotation: ")) { ImGui::TreePop(); }
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			if (ImGui::SliderAngle("X", &DummyEntity->GetTransform().GetRotation().X()))
+			{
+				DummyEntity->GetTransform().UpdateTransform();
+			}
+
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			if (ImGui::SliderAngle("Y", &DummyEntity->GetTransform().GetRotation().Y()))
+			{
+				DummyEntity->GetTransform().UpdateTransform();
+			}
+
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			if (ImGui::SliderAngle("Z", &DummyEntity->GetTransform().GetRotation().Z()))
+			{
+				DummyEntity->GetTransform().UpdateTransform();
+			}
+
+			if (ImGui::TreeNode("new_entity_scale", "")) { ImGui::TreePop(); }
+			ImGui::SameLine();
+			ImGui::SetNextItemWidth(100.0f);
+			if (ImGui::DragFloat("Scale", &DummyEntity->GetTransform().GetScale(), 0.005f, 0.1f, 10.0f, "%.3f", ImGuiSliderFlags_AlwaysClamp))
+			{
+				DummyEntity->GetTransform().UpdateTransform();
+			}
+
+			ImGui::SetNextItemOpen(true);
+			if (ImGui::TreeNode("new_entity_color", "Base Color"))
+			{
+				//ImGui::ColorPicker4("color_pick", DummyEntity->EditColor().data());
+				ImGui::ColorEdit4("Entity Color", DummyEntity->EditColor().data());
+				ImGui::TreePop();
+			}
+			ImGui::TreePop();
+		}
+		if(ImGui::Button("Create"))
+		{
+			HandleCreate();
+		}
+		
 		ImGui::End();
+	}
+
+	void GuiManager::HandleCreate()
+	{
+		std::string key = PrimitiveNames[PrimitiveIndex-1];
+
+		Material* mat = App->GetAppResources().GetMaterial("Wireframe");
+
+		Vector4f dummy_pos = DummyEntity->GetPosition();
+
+		auto builder = App->GetPrimitiveGenerator().RequestPrimitive(key)->Build();
+		builder.Position(Vector3f(dummy_pos.X(), dummy_pos.Y(), dummy_pos.Z()))
+			.Rotate(DummyEntity->GetRotation())
+			.Scale(DummyEntity->GetScale())
+			.WithColor(DummyEntity->GetColor())
+			.WithMaterial(*mat)
+			.OnScene(App->GetSceneManager().GetScene())
+			.Finish();
 	}
 
 	void GuiManager::DrawMinimap()

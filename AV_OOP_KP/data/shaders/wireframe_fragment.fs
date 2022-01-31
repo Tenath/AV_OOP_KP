@@ -8,7 +8,7 @@ out vec4 output_color;
 
 void main()
 {	
-	const float threshold = 0.15f;
+	const float threshold = 0.10f;
 	float nearD = min(min(bc_dist.x,bc_dist.y),bc_dist.z);
 	float alpha = (nearD > threshold) ? 0.0f : (threshold-nearD)/threshold;
 	//float nearD = bc_dist.y;

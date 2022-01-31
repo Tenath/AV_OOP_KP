@@ -84,6 +84,6 @@ namespace av
 		Program* GetProgram(const std::string& name);
 
 		Scene* GetScene(const std::string& scene);
-		Material* GetMaterial(const std::string& scene);
+		Material* GetMaterial(const std::string& material);
 	};
 }

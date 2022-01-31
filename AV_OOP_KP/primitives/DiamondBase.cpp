@@ -78,4 +78,9 @@ namespace av
 		sb.WithName("Diamond #"+std::to_string(++counter));
 		return sb;
 	}
+
+	std::string DiamondBase::GetPrimitiveName()
+	{
+		return "Diamond";
+	}
 }

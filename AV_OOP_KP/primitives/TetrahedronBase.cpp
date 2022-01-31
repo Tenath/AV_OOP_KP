@@ -37,4 +37,9 @@ namespace av
 		sb.WithName("Tetrahedron #" + std::to_string(++counter));
 		return sb;
 	}
+
+	std::string TetrahedronBase::GetPrimitiveName()
+	{
+		return "Tetrahedron";
+	}
 }

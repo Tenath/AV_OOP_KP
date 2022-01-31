@@ -31,6 +31,7 @@ namespace av
 
 		virtual Mesh* GenerateMesh() = 0;
 		virtual SceneEntityBuilder Build() = 0;
+		virtual std::string GetPrimitiveName() = 0;
 
 		virtual ~PrimitiveBase()
 		{

@@ -36,4 +36,9 @@ namespace av
 		sb.WithName("Triangle #" + std::to_string(++counter));
 		return sb;
 	}
+
+	std::string TriangleBase::GetPrimitiveName()
+	{
+		return "Triangle";
+	}
 }

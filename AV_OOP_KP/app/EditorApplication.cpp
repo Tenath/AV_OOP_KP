@@ -11,6 +11,7 @@
 #include "../primitives/CubeBase.hpp"
 #include "../primitives/RectangleBase.hpp"
 #include "../primitives/SphereBase.hpp"
+#include "../scene/PrimitiveGenerator.hpp"
 
 #include <iostream>
 #include <imgui_impl_sdl.h>
@@ -25,7 +26,8 @@ namespace av
 	EditorApplication::EditorApplication(int argc, char* argv[])
 		: Application(argc, argv), gui(this)
 	{
-
+		primitives = new PrimitiveGenerator();
+		RegisterPrimitives();
 	}
 
 	void EditorApplication::RecomputeAspectRatio()
@@ -58,19 +60,7 @@ namespace av
 			throw std::logic_error("Error in shader program: " + program->GetError());
 		}
 
-		//DrawSequence<Vertex, ushort> triangle(PrimitiveType::Triangles, { 0,1,2 });
-		//std::vector<DrawSequence<unsigned>> sequences = { triangle };
-		//triangle_mesh = BuildTriangleMesh();
-
 		RecomputeAspectRatio();
-		vertex_array = new VertexArray<Vertex, ushort>();
-		
-		primitive_builders["Triangle"] = new TriangleBase(*vertex_array);
-		primitive_builders["Diamond"] = new DiamondBase(*vertex_array);
-		primitive_builders["Tetrahedron"] = new TetrahedronBase(*vertex_array);
-		primitive_builders["Cube"] = new CubeBase(*vertex_array);
-		primitive_builders["Rectangle"] = new RectangleBase(*vertex_array);
-		primitive_builders["Sphere"] = new SphereBase(*vertex_array);
 
 		rotation_uniform = glGetUniformLocation(program->GetHandle(), "rm");
 		aspect_uniform = glGetUniformLocation(program->GetHandle(), "aspect_ratio");
@@ -83,7 +73,7 @@ namespace av
 		glUniform1fv(aspect_uniform, 1, &aspect_ratio);
 		glUniformMatrix4fv(rotation_uniform, 1, false, rotation_matrix.data);
 		
-		entity = primitive_builders["Tetrahedron"]->Build()
+		entity = primitives->RequestPrimitive("Tetrahedron")->Build()
 			.Position(Vector3f(0.0f, 0.0f, 0.0f))
 			.Rotate(Vector3f(0.0f, 0.0f, 0.0f))
 			.Scale(0.4f)
@@ -92,7 +82,7 @@ namespace av
 			.OnScene(scene.GetScene())
 			.Finish();
 
-		entity = primitive_builders["Triangle"]->Build()
+		entity = primitives->RequestPrimitive("Triangle")->Build()
 			.Position(Vector3f(0.5f, 0.0f, 0.0f))
 			.Rotate(Vector3f(0.0f, 0.0f, 0.0f))
 			.Scale(0.5f)
@@ -101,7 +91,7 @@ namespace av
 			.OnScene(scene.GetScene())
 			.Finish();
 
-		entity = primitive_builders["Diamond"]->Build()
+		entity = primitives->RequestPrimitive("Diamond")->Build()
 			.Position(Vector3f(0.0f, 0.0f, 0.5f))
 			.Rotate(Vector3f(0.0f, 0.0f, 0.0f))
 			.Scale(0.5f)
@@ -110,7 +100,7 @@ namespace av
 			.OnScene(scene.GetScene())
 			.Finish();
 
-		entity = primitive_builders["Cube"]->Build()
+		entity = primitives->RequestPrimitive("Cube")->Build()
 			.Position(Vector3f(-0.5f, 0.0f, -0.5f))
 			.Rotate(Vector3f(0.0f, 0.0f, 0.0f))
 			.Scale(0.25f)
@@ -119,7 +109,7 @@ namespace av
 			.OnScene(scene.GetScene())
 			.Finish();
 
-		entity = primitive_builders["Rectangle"]->Build()
+		entity = primitives->RequestPrimitive("Rectangle")->Build()
 			.Position(Vector3f(1.0f, 0.3f, -1.0f))
 			.Rotate(Vector3f(0.0f, 0.5f, 0.0f))
 			.Scale(0.25f)
@@ -128,7 +118,7 @@ namespace av
 			.OnScene(scene.GetScene())
 			.Finish();
 
-		entity = primitive_builders["Sphere"]->Build()
+		entity = primitives->RequestPrimitive("Sphere")->Build()
 			.Position(Vector3f(-1.0f, 0.0f, 1.0f))
 			.Rotate(Vector3f(0.0f, 0.5f, 0.0f))
 			.Scale(0.5f)
@@ -136,8 +126,6 @@ namespace av
 			.WithMaterial(*material)
 			.OnScene(scene.GetScene())
 			.Finish();
-
-		//program->Unbind();
 
 		ResetCameraPosition();
 
@@ -151,20 +139,21 @@ namespace av
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
+	void EditorApplication::RegisterPrimitives()
+	{
+		primitives->RegisterBase(new TriangleBase(*primitives->GetVertexArray()));
+		primitives->RegisterBase(new DiamondBase(*primitives->GetVertexArray()));
+		primitives->RegisterBase(new TetrahedronBase(*primitives->GetVertexArray()));
+		primitives->RegisterBase(new CubeBase(*primitives->GetVertexArray()));
+		primitives->RegisterBase(new RectangleBase(*primitives->GetVertexArray()));
+		primitives->RegisterBase(new SphereBase(*primitives->GetVertexArray()));
+	}
+
 	EditorApplication::~EditorApplication()
 	{
 		delete entity;
-
-		for (auto entry : primitive_builders)
-		{
-			delete entry.second;
-		}
-
-		delete vertex_array;
+		delete primitives;
 		delete material;
-		//delete program;
-
-		primitive_builders.clear();
 	}
 
 	void EditorApplication::HandleEvents()

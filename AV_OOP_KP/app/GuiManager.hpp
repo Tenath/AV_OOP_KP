@@ -6,6 +6,7 @@
 namespace av
 {
 	class EditorApplication;
+	class SceneEntity;
 
 	class GuiManager
 	{
@@ -17,7 +18,12 @@ namespace av
 		bool ShowMinimap = false;
 		bool ShowToolbox = false;
 
+		int PrimitiveIndex = 0;
+		SceneEntity* DummyEntity;
 		std::string Filename;
+		std::vector<std::string> PrimitiveNames;
+
+		void HandleCreate();
 	public:
 		GuiManager(EditorApplication* p_app);
 		void DrawMainMenu();

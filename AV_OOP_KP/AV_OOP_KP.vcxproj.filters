@@ -117,6 +117,9 @@
     <ClCompile Include="deps\src\imgui_stdlib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scene\PrimitiveGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -221,13 +224,7 @@
     <ClInclude Include="scene\TestSceneDirector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scene\PrimitiveRepository.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="primitives\TetrahedronBase.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="primitives\Context.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="primitives\CubeBase.hpp">
@@ -237,6 +234,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="primitives\SphereBase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\PrimitiveGenerator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

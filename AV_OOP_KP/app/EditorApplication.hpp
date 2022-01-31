@@ -15,12 +15,12 @@ namespace av
 {
 	class PrimitiveBase;
 	class AppResources;
+	class PrimitiveGenerator;
 
 	class EditorApplication : public Application 
 	{
 	private:
-		VertexArray<Vertex, ushort>* vertex_array = nullptr;
-		std::map<std::string, PrimitiveBase*> primitive_builders;
+		PrimitiveGenerator* primitives = nullptr;
 		Program* program = nullptr;
 
 		Vector3f rotation;
@@ -38,6 +38,7 @@ namespace av
 
 		void RecomputeAspectRatio();
 		void ResizeWindow();
+		void RegisterPrimitives();
 	public:
 		void AppInit() override;
 
@@ -55,6 +56,8 @@ namespace av
 
 		GuiManager& GetGuiManager() { return gui; }
 		SceneManager& GetSceneManager() { return scene; }
+		PrimitiveGenerator& GetPrimitiveGenerator() { return *primitives; }
+		AppResources& GetAppResources() { return resources; }
 
 		void ResetCameraPosition();
 	};

@@ -106,4 +106,9 @@ namespace av
 		sb.WithName("Sphere #" + std::to_string(++counter));
 		return sb;
 	}
+
+	std::string SphereBase::GetPrimitiveName()
+	{
+		return "Sphere";
+	}
 }

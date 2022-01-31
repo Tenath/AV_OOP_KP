@@ -49,4 +49,9 @@ namespace av
 		sb.WithName("Cube #" + std::to_string(++counter));
 		return sb;
 	}
+
+	std::string CubeBase::GetPrimitiveName()
+	{
+		return "Cube";
+	}
 }

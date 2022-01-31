@@ -39,4 +39,9 @@ namespace av
 		sb.WithName("Rectangle #" + std::to_string(++counter));
 		return sb;
 	}
+
+	std::string RectangleBase::GetPrimitiveName()
+	{
+		return "Rectangle";
+	}
 }

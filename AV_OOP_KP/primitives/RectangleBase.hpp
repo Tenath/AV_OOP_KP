@@ -12,5 +12,6 @@ namespace av
 
 		Mesh* GenerateMesh() override;
 		SceneEntityBuilder Build() override;
+		std::string GetPrimitiveName() override;
 	};
 }

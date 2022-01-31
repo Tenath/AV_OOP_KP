@@ -321,16 +321,18 @@ namespace av
 				if (line[0] == 'm')
 				{
 					auto matline = StringSplit(line, ';');
-					if (matline.size() != 6)
+					if (matline.size() != 7)
 						throw std::exception("Malformed line in materials file");
 
 					std::string name = matline[1];
-					Vector3f ambient = UnpackVectorString<3>(matline[2]);
-					Vector3f diffuse = UnpackVectorString<3>(matline[3]);
-					Vector3f specular = UnpackVectorString<3>(matline[4]);
-					float shininess = std::stof(matline[5]);
+					std::string progname = matline[2];
+					Vector3f ambient = UnpackVectorString<3>(matline[3]);
+					Vector3f diffuse = UnpackVectorString<3>(matline[4]);
+					Vector3f specular = UnpackVectorString<3>(matline[5]);
+					float shininess = std::stof(matline[6]);
 					
 					Material* mat = new Material;
+					mat->SetProgram(GetProgram(progname));
 					mat->Name = name;
 					mat->Ambient = ambient;
 					mat->Diffuse = diffuse;
