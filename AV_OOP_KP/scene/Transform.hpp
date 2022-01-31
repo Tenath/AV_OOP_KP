@@ -14,17 +14,17 @@ namespace av
 		Matrix4f matrix;
 
 	public:
-		Vector4f GetPosition() { return position; }
+		Vector4f& GetPosition() { return position; }
 		void SetPosition(Vector3f pos) 
 		{ 
 			position = Vector4f(pos.X(), pos.Y(), pos.Z(), 1.0f); 
 			UpdateTransform(); 
 		}
 
-		Vector3f GetRotation() { return rotation; }
+		Vector3f& GetRotation() { return rotation; }
 		void SetRotation(Vector3f rot) { rotation = rot; UpdateTransform(); }
 
-		float GetScale() { return scale; }
+		float& GetScale() { return scale; }
 		void SetScale(float sc) { scale = sc; UpdateTransform(); }
 
 		void UpdateTransform();

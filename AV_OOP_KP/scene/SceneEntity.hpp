@@ -65,5 +65,7 @@ namespace av
 
 		Scene* GetScene() { return scene; }
 		void SetScene(Scene* sc);
+
+		Transform& GetTransform() { return transform; }
 	};
 }

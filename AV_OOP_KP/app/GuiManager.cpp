@@ -122,6 +122,7 @@ namespace av
 	{
 		ImGui::Begin("Entity List", &ShowEntityListWindow);
 		
+		//ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
 		if (ImGui::TreeNode("Scene Entities"))
 		{
 			auto objects = App->GetSceneManager().GetScene()->GetObjects();
@@ -131,8 +132,28 @@ namespace av
 			{
 				std::string name = "entity_" + std::to_string(i);
 
-				if (ImGui::TreeNode(name.c_str(), fmt, i+1, objects[i]->GetName().c_str()))
+				if (ImGui::TreeNode(name.c_str(), fmt, i + 1, objects[i]->GetName().c_str()))
 				{
+					ImGui::TreeNode(("entity_prop_pos_" + std::to_string(i)).c_str(), "Position: ");
+					ImGui::SameLine();
+					ImGui::SetNextItemWidth(100.0f);
+					if (ImGui::InputFloat("x", &objects[i]->GetTransform().GetPosition().X(), 0.01f, 0.1f))
+					{
+						objects[i]->UpdateTransform();
+					}
+					ImGui::SameLine();
+					ImGui::SetNextItemWidth(100.0f);
+					if (ImGui::InputFloat("y", &objects[i]->GetTransform().GetPosition().Y(), 0.01f, 0.1f))
+					{
+						objects[i]->UpdateTransform();
+					}
+					ImGui::SameLine();
+					ImGui::SetNextItemWidth(100.0f);
+					if (ImGui::InputFloat("z", &objects[i]->GetTransform().GetPosition().Z(), 0.01f, 0.1f))
+					{
+						objects[i]->UpdateTransform();
+					}
+
 					ImGui::TreePop();
 				}
 			}
