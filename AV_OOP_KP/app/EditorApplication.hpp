@@ -37,6 +37,7 @@ namespace av
 		AppResources resources;
 
 		void RecomputeAspectRatio();
+		void ResizeWindow();
 	public:
 		void AppInit() override;
 

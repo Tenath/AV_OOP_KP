@@ -29,9 +29,23 @@ namespace av
 		{
 			cam.UpdateViewMatrix();
 			perspective.UpdateProjection();
-			//UpdateView();
 			UpdateLightSourceUniforms();
-			for (SceneEntity* obj : objects) obj->Draw();
+
+			// Basic, computationally expensive depth sorting
+			std::vector<SceneEntity*> depth_sorted = objects;
+			std::sort(depth_sorted.begin(), depth_sorted.end(),
+				[this](SceneEntity* a, SceneEntity* b)
+				{
+					Vector4f apos = a->GetPosition();
+					Vector4f bpos = b->GetPosition();
+					Vector3f campos = cam.GetCameraPosVector();
+					float a_dist = VectorDistance(campos, Vector3f(apos.X(), apos.Y(), apos.Z()));
+					float b_dist = VectorDistance(campos, Vector3f(bpos.X(), bpos.Y(), bpos.Z()));
+
+					return a_dist > b_dist;
+				});
+
+			for (SceneEntity* obj : depth_sorted) obj->Draw();
 		}
 
 		void AddObject(SceneEntity* obj)
@@ -42,7 +56,12 @@ namespace av
 
 		void RemoveObject(SceneEntity* obj)
 		{
-			
+			auto it = std::find(objects.begin(), objects.end(), obj);
+
+			if(it!=objects.end())
+			{
+				objects.erase(it);
+			}
 		}
 
 		void AddLightSource(LightSource* ls)

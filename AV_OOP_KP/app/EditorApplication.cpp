@@ -9,6 +9,8 @@
 #include "../primitives/DiamondBase.hpp"
 #include "../primitives/TetrahedronBase.hpp"
 #include "../primitives/CubeBase.hpp"
+#include "../primitives/RectangleBase.hpp"
+#include "../primitives/SphereBase.hpp"
 
 #include <iostream>
 #include <imgui_impl_sdl.h>
@@ -67,6 +69,8 @@ namespace av
 		primitive_builders["Diamond"] = new DiamondBase(*vertex_array);
 		primitive_builders["Tetrahedron"] = new TetrahedronBase(*vertex_array);
 		primitive_builders["Cube"] = new CubeBase(*vertex_array);
+		primitive_builders["Rectangle"] = new RectangleBase(*vertex_array);
+		primitive_builders["Sphere"] = new SphereBase(*vertex_array);
 
 		rotation_uniform = glGetUniformLocation(program->GetHandle(), "rm");
 		aspect_uniform = glGetUniformLocation(program->GetHandle(), "aspect_ratio");
@@ -115,6 +119,24 @@ namespace av
 			.OnScene(scene.GetScene())
 			.Finish();
 
+		entity = primitive_builders["Rectangle"]->Build()
+			.Position(Vector3f(1.0f, 0.3f, -1.0f))
+			.Rotate(Vector3f(0.0f, 0.5f, 0.0f))
+			.Scale(0.25f)
+			.WithColor(Vector4f(0.2f, 0.8f, 0.4f, 1.0f))
+			.WithMaterial(*material)
+			.OnScene(scene.GetScene())
+			.Finish();
+
+		entity = primitive_builders["Sphere"]->Build()
+			.Position(Vector3f(-1.0f, 0.0f, 1.0f))
+			.Rotate(Vector3f(0.0f, 0.5f, 0.0f))
+			.Scale(0.5f)
+			.WithColor(Vector4f(0.2f, 0.8f, 0.4f, 1.0f))
+			.WithMaterial(*material)
+			.OnScene(scene.GetScene())
+			.Finish();
+
 		//program->Unbind();
 
 		ResetCameraPosition();
@@ -153,6 +175,14 @@ namespace av
 
 			switch (evt.type)
 			{
+			case SDL_WINDOWEVENT:
+				switch (evt.window.event)
+				{
+				case SDL_WINDOWEVENT_RESIZED:
+					ResizeWindow();
+					break;
+				}
+				break;
 			case SDL_QUIT:
 				running = false;
 				break;
@@ -164,6 +194,14 @@ namespace av
 		ImGuiIO& io = ImGui::GetIO();
 		if (!io.WantCaptureKeyboard) { HandleKeyboard(); }
 		if (!io.WantCaptureMouse) { HandleMouse(); }
+	}
+
+	void EditorApplication::ResizeWindow()
+	{
+		SDL_GetWindowSize(window, (int*)&WinWidth, (int*)&WinHeight);
+		glViewport(0, 0, WinWidth, WinHeight);
+		RecomputeAspectRatio();
+		scene.GetScene()->GetPerspective().SetAspectRatio(aspect_ratio);
 	}
 
 	void EditorApplication::Process()
@@ -215,8 +253,8 @@ namespace av
 		if (keys[SDL_SCANCODE_D]) { world->GetCamera().SidestepFocus(0.1f); }
 		if (keys[SDL_SCANCODE_W]) { world->GetCamera().AdvanceFocus(-0.1f); }
 		if (keys[SDL_SCANCODE_S]) { world->GetCamera().AdvanceFocus(0.1f); }
-		if (keys[SDL_SCANCODE_KP_PLUS]) { world->GetCamera().CamChangeDistance(-0.1f); }
-		if (keys[SDL_SCANCODE_KP_MINUS]) { world->GetCamera().CamChangeDistance(0.1f); }
+		if (keys[SDL_SCANCODE_E]) { world->GetCamera().CamChangeDistance(-0.1f); }
+		if (keys[SDL_SCANCODE_Q]) { world->GetCamera().CamChangeDistance(0.1f); }
 		if (keys[SDL_SCANCODE_BACKSPACE]) { ResetCameraPosition(); }
 
 		if (keys[SDL_SCANCODE_UP]) { world->GetCamera().CamRotateVertical(0.05f); }

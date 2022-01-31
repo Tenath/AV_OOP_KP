@@ -2,6 +2,7 @@
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
+#include "imgui_stdlib.h"
 #include "EditorApplication.hpp"
 
 namespace av
@@ -131,10 +132,14 @@ namespace av
 			for (size_t i = 0; i < objects.size(); i++)
 			{
 				std::string name = "entity_" + std::to_string(i);
-
+				ImGui::PushID(objects[i]);
 				if (ImGui::TreeNode(name.c_str(), fmt, i + 1, objects[i]->GetName().c_str()))
 				{
-					ImGui::TreeNode(("entity_prop_pos_" + std::to_string(i)).c_str(), "Position: ");
+					if(ImGui::TreeNode("entity_name", "Name:")) { ImGui::TreePop(); }
+					ImGui::SameLine();
+					ImGui::SetNextItemWidth(200.0f);
+					ImGui::InputText("", &objects[i]->EditName());
+					if(ImGui::TreeNode("entity_prop_pos", "Position: ")) { ImGui::TreePop(); }
 					ImGui::SameLine();
 					ImGui::SetNextItemWidth(100.0f);
 					if (ImGui::InputFloat("x", &objects[i]->GetTransform().GetPosition().X(), 0.01f, 0.1f))
@@ -154,8 +159,47 @@ namespace av
 						objects[i]->UpdateTransform();
 					}
 
+					if(ImGui::TreeNode("entity_prop_rot", "Rotation: ")) { ImGui::TreePop(); }
+					ImGui::SameLine();
+					ImGui::SetNextItemWidth(100.0f);
+					if (ImGui::SliderAngle("X", &objects[i]->GetTransform().GetRotation().X()))
+					{
+						objects[i]->GetTransform().UpdateTransform();
+					}
+
+					ImGui::SameLine();
+					ImGui::SetNextItemWidth(100.0f);
+					if (ImGui::SliderAngle("Y", &objects[i]->GetTransform().GetRotation().Y()))
+					{
+						objects[i]->GetTransform().UpdateTransform();
+					}
+
+					ImGui::SameLine();
+					ImGui::SetNextItemWidth(100.0f);
+					if (ImGui::SliderAngle("Z", &objects[i]->GetTransform().GetRotation().Z()))
+					{
+						objects[i]->GetTransform().UpdateTransform();
+					}
+
+					if(ImGui::TreeNode("entity_scale", "")) { ImGui::TreePop(); }
+					ImGui::SameLine();
+					ImGui::SetNextItemWidth(100.0f);
+					if(ImGui::DragFloat("Scale", &objects[i]->GetTransform().GetScale(), 0.005f, 0.1f, 10.0f, "%.3f", ImGuiSliderFlags_AlwaysClamp))
+					{
+						objects[i]->GetTransform().UpdateTransform();
+					}
+					
+					ImGui::SetNextItemOpen(true);
+					if (ImGui::TreeNode("entity_color", "Base Color"))
+					{
+						//ImGui::ColorPicker4("color_pick", objects[i]->EditColor().data());
+						ImGui::ColorEdit4("Entity Color", objects[i]->EditColor().data());
+						ImGui::TreePop();
+					}
+
 					ImGui::TreePop();
 				}
+				ImGui::PopID();
 			}
 			ImGui::TreePop();
 		}
@@ -166,6 +210,8 @@ namespace av
 	void GuiManager::DrawToolbox()
 	{
 		ImGui::Begin("Toolbox", &ShowToolbox);
+
+
 
 		ImGui::End();
 	}

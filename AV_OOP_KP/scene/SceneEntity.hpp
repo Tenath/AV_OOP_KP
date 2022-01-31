@@ -42,6 +42,7 @@ namespace av
 		void UpdateTransform();
 		void UpdateUniforms();
 
+		std::string& EditName() { return name; }
 		std::string GetName() { return name; }
 		void SetName(const std::string& p_name) { name = p_name; }
 
@@ -57,6 +58,7 @@ namespace av
 		float GetScale() { return transform.GetScale(); }
 		void SetScale(float sc) { transform.SetScale(sc); UpdateTransform(); }
 
+		Vector4f& EditColor() { return color; }
 		Vector4f GetColor() { return color; }
 		void SetColor(Vector4f clr) { color = clr; }
 

@@ -152,6 +152,7 @@
     <ClCompile Include="deps\src\imgui_draw.cpp" />
     <ClCompile Include="deps\src\imgui_impl_opengl3.cpp" />
     <ClCompile Include="deps\src\imgui_impl_sdl.cpp" />
+    <ClCompile Include="deps\src\imgui_stdlib.cpp" />
     <ClCompile Include="deps\src\imgui_tables.cpp" />
     <ClCompile Include="deps\src\imgui_widgets.cpp" />
     <ClCompile Include="globals.cpp" />
@@ -160,6 +161,8 @@
     <ClCompile Include="globj\VertexArray.cpp" />
     <ClCompile Include="primitives\CubeBase.cpp" />
     <ClCompile Include="primitives\DiamondBase.cpp" />
+    <ClCompile Include="primitives\RectangleBase.cpp" />
+    <ClCompile Include="primitives\SphereBase.cpp" />
     <ClCompile Include="primitives\TetrahedronBase.cpp" />
     <ClCompile Include="primitives\TriangleBase.cpp" />
     <ClCompile Include="scene\LightSource.cpp" />
@@ -198,6 +201,8 @@
     <ClInclude Include="primitives\CubeBase.hpp" />
     <ClInclude Include="primitives\DiamondBase.hpp" />
     <ClInclude Include="primitives\PrimitiveBase.hpp" />
+    <ClInclude Include="primitives\RectangleBase.hpp" />
+    <ClInclude Include="primitives\SphereBase.hpp" />
     <ClInclude Include="primitives\TetrahedronBase.hpp" />
     <ClInclude Include="primitives\TriangleBase.hpp" />
     <ClInclude Include="scene\LightSource.hpp" />

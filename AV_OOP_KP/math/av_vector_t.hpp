@@ -284,6 +284,20 @@ template<typename T> Vector<T, 3> VectorCross(const Vector<T, 3>& v1, const Vect
 	return vr;
 }
 
+template<typename T, size_t D> T VectorDistance(const Vector<T, D>& v1, const Vector<T, D>& v2)
+{
+	T dist=T();
+
+	for (size_t i = 0; i < D; ++i)
+	{
+		dist += (T)pow(v1.at(i)-v2.at(i), 2.0);
+	}
+	
+	dist = (T)sqrt(dist);
+
+	return dist;
+}
+
 } // namespace AV
 
 #endif
