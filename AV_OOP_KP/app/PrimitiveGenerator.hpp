@@ -3,20 +3,21 @@
 #include "../globals.hpp"
 #include "../globj/VertexArray.hpp"
 #include "../globj/Vertex.hpp"
-#include "../primitives/PrimitiveBase.hpp"
+#include "../primitives/PrimitiveFactory.hpp"
 
 namespace av
 {
 	class PrimitiveGenerator
 	{
 	private:
-		std::map<std::string, PrimitiveBase*> data;
+		std::map<std::string, PrimitiveFactory*> data;
 		VertexArray<Vertex, USHORT>* va;
 	public:
-		bool RegisterBase(PrimitiveBase* base);
-		PrimitiveBase* RequestPrimitive(const std::string& name);
+		PrimitiveFactory& operator[](const std::string& name);
+		bool RegisterFactory(PrimitiveFactory* base);
+		PrimitiveFactory* RequestFactory(const std::string& name);
 		VertexArray<Vertex, USHORT>* GetVertexArray();
-		std::map<std::string, PrimitiveBase*>& GetData();
+		std::map<std::string, PrimitiveFactory*>& GetData();
 		std::vector<std::string> GetPrimitiveNames();
 
 		PrimitiveGenerator();

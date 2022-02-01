@@ -3,7 +3,7 @@
 #include "SceneManager.hpp"
 #include "../scene/Scene.hpp"
 #include "EditorApplication.hpp"
-#include "../scene/PrimitiveGenerator.hpp"
+#include "PrimitiveGenerator.hpp"
 
 namespace av
 {
@@ -92,7 +92,7 @@ namespace av
 					if (objline.size() != 7)
 						throw std::exception("Malformed object line in scene file");
 
-					PrimitiveBase* base = app->GetPrimitiveGenerator().RequestPrimitive(objline[1]);
+					PrimitiveFactory* base = app->GetPrimitiveGenerator().RequestFactory(objline[1]);
 					if (base == nullptr)
 						throw std::exception(("Primitive \"" + objline[1] + "\" not found!").c_str());
 

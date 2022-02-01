@@ -5,13 +5,13 @@
 #include "../scene/Transform.hpp"
 #include "../scene/Mesh.hpp"
 
-#include "../primitives/TriangleBase.hpp"
-#include "../primitives/DiamondBase.hpp"
-#include "../primitives/TetrahedronBase.hpp"
-#include "../primitives/CubeBase.hpp"
-#include "../primitives/RectangleBase.hpp"
-#include "../primitives/SphereBase.hpp"
-#include "../scene/PrimitiveGenerator.hpp"
+#include "../primitives/TriangleFactory.hpp"
+#include "../primitives/DiamondFactory.hpp"
+#include "../primitives/TetrahedronFactory.hpp"
+#include "../primitives/CubeFactory.hpp"
+#include "../primitives/RectangleFactory.hpp"
+#include "../primitives/SphereFactory.hpp"
+#include "PrimitiveGenerator.hpp"
 
 #include <iostream>
 #include <imgui_impl_sdl.h>
@@ -27,12 +27,18 @@ namespace av
 		: Application(argc, argv), gui(this), scene(this)
 	{
 		primitives = new PrimitiveGenerator();
+		test_director = new TestSceneDirector(*primitives);
 		RegisterPrimitives();
 	}
 
 	void EditorApplication::RecomputeAspectRatio()
 	{
 		aspect_ratio = WinWidth / (float)WinHeight;
+	}
+
+	void EditorApplication::SetupTestScene()
+	{
+		test_director->BuildTestScene(*scene.GetScene(), *material);
 	}
 
 	void EditorApplication::ResetCameraPosition()
@@ -73,85 +79,28 @@ namespace av
 		material = resources.GetMaterial("Wireframe");
 		glUniform1fv(aspect_uniform, 1, &aspect_ratio);
 		glUniformMatrix4fv(rotation_uniform, 1, false, rotation_matrix.data);
-		
-		entity = primitives->RequestPrimitive("Tetrahedron")->Build()
-			.Position(Vector3f(0.0f, 0.0f, 0.0f))
-			.Rotate(Vector3f(0.0f, 0.0f, 0.0f))
-			.Scale(0.4f)
-			.WithColor(Vector4f(0.9f, 0.3f, 0.0f, 1.0f))
-			.WithMaterial(*material)
-			.OnScene(scene.GetScene())
-			.Finish();
 
-		entity = primitives->RequestPrimitive("Triangle")->Build()
-			.Position(Vector3f(0.5f, 0.0f, 0.0f))
-			.Rotate(Vector3f(0.0f, 0.0f, 0.0f))
-			.Scale(0.5f)
-			.WithColor(Vector4f(0.7f, 0.8f, 0.4f, 1.0f))
-			.WithMaterial(*material)
-			.OnScene(scene.GetScene())
-			.Finish();
-
-		entity = primitives->RequestPrimitive("Diamond")->Build()
-			.Position(Vector3f(0.0f, 0.0f, 0.5f))
-			.Rotate(Vector3f(0.0f, 0.0f, 0.0f))
-			.Scale(0.5f)
-			.WithColor(Vector4f(0.0f, 0.8f, 0.8f, 1.0f))
-			.WithMaterial(*material)
-			.OnScene(scene.GetScene())
-			.Finish();
-
-		entity = primitives->RequestPrimitive("Cube")->Build()
-			.Position(Vector3f(-0.5f, 0.0f, -0.5f))
-			.Rotate(Vector3f(0.0f, 0.0f, 0.0f))
-			.Scale(0.25f)
-			.WithColor(Vector4f(0.2f, 0.8f, 0.4f, 1.0f))
-			.WithMaterial(*material)
-			.OnScene(scene.GetScene())
-			.Finish();
-
-		entity = primitives->RequestPrimitive("Rectangle")->Build()
-			.Position(Vector3f(1.0f, 0.3f, -1.0f))
-			.Rotate(Vector3f(0.0f, 0.5f, 0.0f))
-			.Scale(0.25f)
-			.WithColor(Vector4f(0.2f, 0.8f, 0.4f, 1.0f))
-			.WithMaterial(*material)
-			.OnScene(scene.GetScene())
-			.Finish();
-
-		entity = primitives->RequestPrimitive("Sphere")->Build()
-			.Position(Vector3f(-1.0f, 0.0f, 1.0f))
-			.Rotate(Vector3f(0.0f, 0.5f, 0.0f))
-			.Scale(0.5f)
-			.WithColor(Vector4f(0.2f, 0.8f, 0.4f, 1.0f))
-			.WithMaterial(*material)
-			.OnScene(scene.GetScene())
-			.Finish();
-
+		SetupTestScene();
 		ResetCameraPosition();
 
-		/*glEnable(GL_DEPTH_TEST);
-		glDepthMask(GL_TRUE);
-		glDepthFunc(GL_LEQUAL);
-		glDepthRange(0.0f, 1.0f);*/
-
-		//glDisable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	void EditorApplication::RegisterPrimitives()
 	{
-		primitives->RegisterBase(new TriangleBase(*primitives->GetVertexArray()));
-		primitives->RegisterBase(new DiamondBase(*primitives->GetVertexArray()));
-		primitives->RegisterBase(new TetrahedronBase(*primitives->GetVertexArray()));
-		primitives->RegisterBase(new CubeBase(*primitives->GetVertexArray()));
-		primitives->RegisterBase(new RectangleBase(*primitives->GetVertexArray()));
-		primitives->RegisterBase(new SphereBase(*primitives->GetVertexArray()));
+		primitives->RegisterFactory(new TriangleFactory(*primitives->GetVertexArray()));
+		primitives->RegisterFactory(new DiamondFactory(*primitives->GetVertexArray()));
+		primitives->RegisterFactory(new TetrahedronFactory(*primitives->GetVertexArray()));
+		primitives->RegisterFactory(new CubeFactory(*primitives->GetVertexArray()));
+		primitives->RegisterFactory(new RectangleFactory(*primitives->GetVertexArray()));
+		primitives->RegisterFactory(new SphereFactory(*primitives->GetVertexArray()));
 	}
 
 	EditorApplication::~EditorApplication()
 	{
+		delete primitives;
+		delete test_director;
 	}
 
 	void EditorApplication::HandleEvents()

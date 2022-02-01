@@ -1,10 +1,10 @@
-#include "TetrahedronBase.hpp"
+#include "TetrahedronFactory.hpp"
 #include "../globj/Vertex.hpp"
 #include "../scene/Mesh.hpp"
 
 namespace av
 {
-	Mesh* TetrahedronBase::GenerateMesh()
+	Mesh* TetrahedronFactory::GenerateMesh()
 	{
 		std::vector<Vertex> vertices =
 		{
@@ -30,7 +30,7 @@ namespace av
 		return tri_mesh;
 	}
 
-	SceneEntityBuilder TetrahedronBase::Build()
+	SceneEntityBuilder TetrahedronFactory::Build()
 	{
 		SceneEntityBuilder sb;
 		sb.WithMesh(*GetBaseMesh());
@@ -38,7 +38,7 @@ namespace av
 		return sb;
 	}
 
-	std::string TetrahedronBase::GetPrimitiveName()
+	std::string TetrahedronFactory::GetPrimitiveName()
 	{
 		return "Tetrahedron";
 	}

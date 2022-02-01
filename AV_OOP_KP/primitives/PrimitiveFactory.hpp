@@ -5,7 +5,7 @@
 
 namespace av
 {
-	class PrimitiveBase
+	class PrimitiveFactory
 	{
 	protected:
 		Mesh* base_mesh = nullptr;
@@ -24,7 +24,7 @@ namespace av
 			return base_mesh;
 		}
 	public:
-		PrimitiveBase(VertexArray<Vertex, ushort>& p_va)
+		PrimitiveFactory(VertexArray<Vertex, ushort>& p_va)
 		{
 			va = &p_va;
 		}
@@ -33,7 +33,7 @@ namespace av
 		virtual SceneEntityBuilder Build() = 0;
 		virtual std::string GetPrimitiveName() = 0;
 
-		virtual ~PrimitiveBase()
+		virtual ~PrimitiveFactory()
 		{
 			if (base_mesh != nullptr) delete base_mesh;
 		}

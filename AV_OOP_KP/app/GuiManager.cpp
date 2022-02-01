@@ -4,7 +4,7 @@
 #include "imgui_impl_sdl.h"
 #include "imgui_stdlib.h"
 #include "EditorApplication.hpp"
-#include "../scene/PrimitiveGenerator.hpp"
+#include "PrimitiveGenerator.hpp"
 #include <ImGuiFileBrowser.h>
 
 namespace av
@@ -79,9 +79,14 @@ namespace av
 				if (ImGui::MenuItem("Toolbox")) ShowToolbox = true;
 				//if (ImGui::MenuItem("Property Window")) ShowPropertyWindow = true;
 				//if (ImGui::MenuItem("Minimap")) ShowMinimap = true;
-				ImGui::Separator();
-				if (ImGui::MenuItem("ImGui demo window")) { ShowImGuiDemo = true; }
 
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Test"))
+			{
+				if (ImGui::MenuItem("Setup Test Scene")) { App->SetupTestScene(); }
+				if (ImGui::MenuItem("ImGui demo window")) { ShowImGuiDemo = true; }
+			
 				ImGui::EndMenu();
 			}
 		}
@@ -342,7 +347,7 @@ namespace av
 
 		Vector4f dummy_pos = DummyEntity->GetPosition();
 
-		auto builder = App->GetPrimitiveGenerator().RequestPrimitive(key)->Build();
+		auto builder = App->GetPrimitiveGenerator().RequestFactory(key)->Build();
 		builder.Position(Vector3f(dummy_pos.X(), dummy_pos.Y(), dummy_pos.Z()))
 			.Rotate(DummyEntity->GetRotation())
 			.Scale(DummyEntity->GetScale())

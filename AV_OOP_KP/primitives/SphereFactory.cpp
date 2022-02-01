@@ -1,11 +1,11 @@
 #include <cmath>
-#include "SphereBase.hpp"
+#include "SphereFactory.hpp"
 #include "../globj/Vertex.hpp"
 #include "../scene/Mesh.hpp"
 
 namespace av
 {
-	Mesh* SphereBase::GenerateMesh()
+	Mesh* SphereFactory::GenerateMesh()
 	{
 		std::vector<Vertex> vertices;
 
@@ -99,7 +99,7 @@ namespace av
 		return tri_mesh;
 	}
 
-	SceneEntityBuilder SphereBase::Build()
+	SceneEntityBuilder SphereFactory::Build()
 	{
 		SceneEntityBuilder sb;
 		sb.WithMesh(*GetBaseMesh());
@@ -107,7 +107,7 @@ namespace av
 		return sb;
 	}
 
-	std::string SphereBase::GetPrimitiveName()
+	std::string SphereFactory::GetPrimitiveName()
 	{
 		return "Sphere";
 	}

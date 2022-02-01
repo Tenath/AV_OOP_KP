@@ -3,7 +3,14 @@
 
 namespace av
 {
-	bool PrimitiveGenerator::RegisterBase(PrimitiveBase* base)
+	PrimitiveFactory& PrimitiveGenerator::operator[](const std::string& name)
+	{
+		PrimitiveFactory* fac = RequestFactory(name);
+		if (fac == nullptr) 
+			throw std::invalid_argument("Primitive Factory does not exist");
+		return *fac;
+	}
+	bool PrimitiveGenerator::RegisterFactory(PrimitiveFactory* base)
 	{
 		std::string name = base->GetPrimitiveName();
 		if (MapContainsKey(data,name)) return false;
@@ -16,7 +23,7 @@ namespace av
 		return va;
 	}
 
-	std::map<std::string, PrimitiveBase*>& PrimitiveGenerator::GetData()
+	std::map<std::string, PrimitiveFactory*>& PrimitiveGenerator::GetData()
 	{
 		return data;
 	}
@@ -33,7 +40,7 @@ namespace av
 		return result;
 	}
 
-	PrimitiveBase* PrimitiveGenerator::RequestPrimitive(const std::string& name)
+	PrimitiveFactory* PrimitiveGenerator::RequestFactory(const std::string& name)
 	{
 		auto it = data.find(name);
 		return (it != data.end()) ? it->second : nullptr;

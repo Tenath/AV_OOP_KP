@@ -1,10 +1,10 @@
-#include "CubeBase.hpp"
+#include "CubeFactory.hpp"
 #include "../globj/Vertex.hpp"
 #include "../scene/Mesh.hpp"
 
 namespace av
 {
-	Mesh* CubeBase::GenerateMesh()
+	Mesh* CubeFactory::GenerateMesh()
 	{
 		std::vector<Vertex> vertices =
 		{
@@ -42,7 +42,7 @@ namespace av
 		return tri_mesh;
 	}
 
-	SceneEntityBuilder CubeBase::Build()
+	SceneEntityBuilder CubeFactory::Build()
 	{
 		SceneEntityBuilder sb;
 		sb.WithMesh(*GetBaseMesh());
@@ -50,7 +50,7 @@ namespace av
 		return sb;
 	}
 
-	std::string CubeBase::GetPrimitiveName()
+	std::string CubeFactory::GetPrimitiveName()
 	{
 		return "Cube";
 	}

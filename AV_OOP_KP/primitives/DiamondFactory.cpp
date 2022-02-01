@@ -1,10 +1,10 @@
-#include "DiamondBase.hpp"
+#include "DiamondFactory.hpp"
 #include "../globj/Vertex.hpp"
 #include "../scene/Mesh.hpp"
 
 namespace av
 {
-	Mesh* DiamondBase::GenerateMesh()
+	Mesh* DiamondFactory::GenerateMesh()
 	{
 		std::vector<Vertex> vertices;
 
@@ -71,7 +71,7 @@ namespace av
 		return tri_mesh;
 	}
 
-	SceneEntityBuilder DiamondBase::Build()
+	SceneEntityBuilder DiamondFactory::Build()
 	{
 		SceneEntityBuilder sb;
 		sb.WithMesh(*GetBaseMesh());
@@ -79,7 +79,7 @@ namespace av
 		return sb;
 	}
 
-	std::string DiamondBase::GetPrimitiveName()
+	std::string DiamondFactory::GetPrimitiveName()
 	{
 		return "Diamond";
 	}

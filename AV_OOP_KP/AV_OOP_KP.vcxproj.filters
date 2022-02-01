@@ -78,10 +78,10 @@
     <ClCompile Include="scene\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="primitives\TriangleBase.cpp">
+    <ClCompile Include="primitives\TriangleFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="primitives\DiamondBase.cpp">
+    <ClCompile Include="primitives\DiamondFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="globals.cpp">
@@ -99,25 +99,25 @@
     <ClCompile Include="scene\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scene\TestSceneDirector.cpp">
+    <ClCompile Include="app\TestSceneDirector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="primitives\TetrahedronBase.cpp">
+    <ClCompile Include="primitives\TetrahedronFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="primitives\CubeBase.cpp">
+    <ClCompile Include="primitives\CubeFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="primitives\RectangleBase.cpp">
+    <ClCompile Include="primitives\RectangleFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="primitives\SphereBase.cpp">
+    <ClCompile Include="primitives\SphereFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="deps\src\imgui_stdlib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scene\PrimitiveGenerator.cpp">
+    <ClCompile Include="app\PrimitiveGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="deps\src\FileBrowser\ImGuiFileBrowser.cpp">
@@ -197,19 +197,19 @@
     <ClInclude Include="globj\VertexGroup.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="primitives\PrimitiveBase.hpp">
+    <ClInclude Include="primitives\PrimitiveFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scene\SceneEntityBuilder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="primitives\TriangleBase.hpp">
+    <ClInclude Include="primitives\TriangleFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="app\SceneManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="primitives\DiamondBase.hpp">
+    <ClInclude Include="primitives\DiamondFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scene\Perspective.hpp">
@@ -221,22 +221,22 @@
     <ClInclude Include="scene\Model.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scene\TestSceneDirector.hpp">
+    <ClInclude Include="app\TestSceneDirector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="primitives\TetrahedronBase.hpp">
+    <ClInclude Include="primitives\TetrahedronFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="primitives\CubeBase.hpp">
+    <ClInclude Include="primitives\CubeFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="primitives\RectangleBase.hpp">
+    <ClInclude Include="primitives\RectangleFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="primitives\SphereBase.hpp">
+    <ClInclude Include="primitives\SphereFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scene\PrimitiveGenerator.hpp">
+    <ClInclude Include="app\PrimitiveGenerator.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,10 +1,10 @@
-#include "RectangleBase.hpp"
+#include "RectangleFactory.hpp"
 #include "../globj/Vertex.hpp"
 #include "../scene/Mesh.hpp"
 
 namespace av
 {
-	Mesh* RectangleBase::GenerateMesh()
+	Mesh* RectangleFactory::GenerateMesh()
 	{
 		std::vector<Vertex> vertices =
 		{
@@ -32,7 +32,7 @@ namespace av
 		return tri_mesh;
 	}
 
-	SceneEntityBuilder RectangleBase::Build()
+	SceneEntityBuilder RectangleFactory::Build()
 	{
 		SceneEntityBuilder sb;
 		sb.WithMesh(*GetBaseMesh());
@@ -40,7 +40,7 @@ namespace av
 		return sb;
 	}
 
-	std::string RectangleBase::GetPrimitiveName()
+	std::string RectangleFactory::GetPrimitiveName()
 	{
 		return "Rectangle";
 	}

@@ -1,14 +1,14 @@
 #pragma once
-#include "PrimitiveBase.hpp"
+#include "PrimitiveFactory.hpp"
 
 namespace av
 {
-	class TetrahedronBase : public PrimitiveBase
+	class TriangleFactory : public PrimitiveFactory
 	{
-		Mesh* mesh = nullptr;
+		Mesh* mesh=nullptr;
 		size_t counter = 0;
 	public:
-		TetrahedronBase(VertexArray<Vertex, ushort>& va) : PrimitiveBase(va) {}
+		TriangleFactory(VertexArray<Vertex, ushort>& va) : PrimitiveFactory(va) {}
 
 		Mesh* GenerateMesh() override;
 		SceneEntityBuilder Build() override;

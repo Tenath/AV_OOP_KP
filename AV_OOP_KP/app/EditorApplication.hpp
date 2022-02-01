@@ -10,10 +10,11 @@
 #include "GuiManager.hpp"
 #include "SceneManager.hpp"
 #include "AppResources.hpp"
+#include "TestSceneDirector.hpp"
 
 namespace av
 {
-	class PrimitiveBase;
+	class PrimitiveFactory;
 	class AppResources;
 	class PrimitiveGenerator;
 
@@ -35,6 +36,7 @@ namespace av
 		GuiManager gui;
 		SceneManager scene;
 		AppResources resources;
+		TestSceneDirector* test_director;
 
 		void RecomputeAspectRatio();
 		void ResizeWindow();
@@ -60,5 +62,6 @@ namespace av
 		AppResources& GetAppResources() { return resources; }
 
 		void ResetCameraPosition();
+		void SetupTestScene();
 	};
 }
