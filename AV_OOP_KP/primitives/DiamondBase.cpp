@@ -60,7 +60,7 @@ namespace av
 		PrimitiveType type = PrimitiveType::Triangles;
 
 		Mesh* tri_mesh = new Mesh(
-			"triangle",
+			"Diamond",
 			vertices,
 			indices,
 			PrimitiveType::Triangles,

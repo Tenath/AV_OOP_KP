@@ -41,6 +41,17 @@ namespace av
 		return result;
 	}
 
+	void WriteTextFileLines(const std::string& filename, const std::vector<std::string>& lines)
+	{
+		std::ofstream fs(filename);
+		if (!fs.good()) throw std::exception("Îרטבךא ןנט נאבמעו ס פאיכמל");
+		for (auto line : lines)
+		{
+			fs << line;
+		}
+		fs.close();
+	}
+
 	std::vector<std::string> StringSplit(const std::string& str, char delimiter)
 	{
 		std::vector<std::string> result;

@@ -35,7 +35,7 @@ namespace av
 	public:
 
 		Mesh(
-			const std::string& name,
+			const std::string& p_name,
 			const std::vector<Vertex>& p_vertices, 
 			const std::vector<ushort>& p_indices,
 			PrimitiveType p_type,
@@ -43,8 +43,9 @@ namespace av
 			VertexArray<Vertex, ushort>* varray = nullptr
 		)
 		{
-			vertices = new VertexGroup<Vertex>(name + ".vertices", p_vertices);
-			indices = new IndexGroup<ushort>(name + ".indices", p_indices, p_type);
+			name = p_name;
+			vertices = new VertexGroup<Vertex>(p_name + ".vertices", p_vertices);
+			indices = new IndexGroup<ushort>(p_name + ".indices", p_indices, p_type);
 			material = mt;
 
 			if (varray != nullptr) SetupVertexArray(*varray);
@@ -79,6 +80,11 @@ namespace av
 				Bind();
 				ds->Draw();
 			}
+		}
+
+		std::string GetName() override
+		{
+			return name;
 		}
 	};
 }

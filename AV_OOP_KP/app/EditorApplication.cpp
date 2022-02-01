@@ -24,7 +24,7 @@ namespace av
 	SceneEntity* entity = nullptr;
 
 	EditorApplication::EditorApplication(int argc, char* argv[])
-		: Application(argc, argv), gui(this)
+		: Application(argc, argv), gui(this), scene(this)
 	{
 		primitives = new PrimitiveGenerator();
 		RegisterPrimitives();
@@ -68,8 +68,9 @@ namespace av
 		rotation_matrix = GenerateRotationMatrix4f(0.0f, 0.0f, 0.0f);
 		program->Bind();
 
-		material = new Material();
-		material->SetProgram(program);
+		/*material = new Material();
+		material->SetProgram(program);*/
+		material = resources.GetMaterial("Wireframe");
 		glUniform1fv(aspect_uniform, 1, &aspect_ratio);
 		glUniformMatrix4fv(rotation_uniform, 1, false, rotation_matrix.data);
 		
@@ -151,9 +152,6 @@ namespace av
 
 	EditorApplication::~EditorApplication()
 	{
-		delete entity;
-		delete primitives;
-		delete material;
 	}
 
 	void EditorApplication::HandleEvents()

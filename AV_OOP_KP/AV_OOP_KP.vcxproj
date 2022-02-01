@@ -88,7 +88,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -147,6 +147,7 @@
     <ClCompile Include="app\GuiManager.cpp" />
     <ClCompile Include="app\SceneManager.cpp" />
     <ClCompile Include="AV_OOP_KP.cpp" />
+    <ClCompile Include="deps\src\FileBrowser\ImGuiFileBrowser.cpp" />
     <ClCompile Include="deps\src\imgui.cpp" />
     <ClCompile Include="deps\src\imgui_demo.cpp" />
     <ClCompile Include="deps\src\imgui_draw.cpp" />
@@ -217,7 +218,6 @@
     <ClInclude Include="scene\SceneEntityBuilder.hpp" />
     <ClInclude Include="scene\TestSceneDirector.hpp" />
     <ClInclude Include="scene\Transform.hpp" />
-    <ClInclude Include="shapes\Shape.hpp" />
     <ClInclude Include="utils\Utils.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

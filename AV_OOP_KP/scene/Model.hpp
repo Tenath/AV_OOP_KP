@@ -12,5 +12,6 @@ namespace av
 		virtual ~Model() {};
 		virtual void Bind() = 0;
 		virtual void Draw() = 0;
+		virtual std::string GetName() = 0;
 	};
 }

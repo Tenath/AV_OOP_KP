@@ -120,6 +120,9 @@
     <ClCompile Include="scene\PrimitiveGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="deps\src\FileBrowser\ImGuiFileBrowser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -192,9 +195,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="globj\VertexGroup.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="shapes\Shape.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="primitives\PrimitiveBase.hpp">

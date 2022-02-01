@@ -173,7 +173,7 @@ namespace av
 			}
 			seq->SetIndexOffset(byte_offset);
 			byte_offset += seq->GetIndexGroup()->GetIndices().size() * sizeof(IndexT);
-			vertex_offset += seq->GetVertexGroup()->GetVertices().size();
+			vertex_offset += (IndexT)(seq->GetVertexGroup()->GetVertices().size());
 		}
 	}
 

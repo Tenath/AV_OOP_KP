@@ -8,6 +8,7 @@ namespace av
 		std::string name = base->GetPrimitiveName();
 		if (MapContainsKey(data,name)) return false;
 		data[name] = base;
+		return true;
 	}
 
 	VertexArray<Vertex, USHORT>* PrimitiveGenerator::GetVertexArray()

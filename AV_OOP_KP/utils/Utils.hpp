@@ -11,6 +11,8 @@ namespace av
 	float DegToRad(float deg);
 	std::string ReadTextFile(const std::string& filename);
 	std::vector<std::string> ReadTextFileLines(const std::string& filename);
+	// Запись из вектора строчек в файл
+	void WriteTextFileLines(const std::string& filename, const std::vector<std::string>& lines);
 	std::vector<std::string> StringSplit(const std::string& str, char delimiter = ' ');
 
 	template <typename T> inline size_t VectorFindIndex(const std::vector<T>& vec, const T& value)
@@ -60,5 +62,19 @@ namespace av
 		}
 
 		return vec;
+	}
+
+	template<size_t D> std::string PackVectorString(const Vector<float, D>& vec)
+	{
+		std::string result = "{";
+
+		for (size_t i = 0; i < vec.size()-1; i++)
+		{
+			result += std::to_string(vec.at(i)) + ",";
+		}
+
+		result += std::to_string(vec.at(vec.size() - 1)) + "}";
+
+		return result;
 	}
 }

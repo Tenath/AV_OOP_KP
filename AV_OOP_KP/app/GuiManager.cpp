@@ -5,6 +5,7 @@
 #include "imgui_stdlib.h"
 #include "EditorApplication.hpp"
 #include "../scene/PrimitiveGenerator.hpp"
+#include <ImGuiFileBrowser.h>
 
 namespace av
 {
@@ -19,6 +20,7 @@ namespace av
 
 		DrawWindows();
 		DrawMainMenu();
+		DrawFileDialogs();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -41,22 +43,30 @@ namespace av
 			{
 				if (ImGui::MenuItem("New", "Ctrl+N")) 
 				{ 
-					ShowConfirmDialog("Create a new scene without saving changes?",
-						[this]() { App->GetSceneManager().New(); });
+					/*ShowConfirmDialog("Create a new scene without saving changes?",
+						[this]() { App->GetSceneManager().New(); });*/
+					App->GetSceneManager().New();
 				}
 				if (ImGui::MenuItem("Open", "Ctrl+O")) 
 				{ 
-					ShowFileDialog([this]() {App->GetSceneManager().Open(Filename); });
+					ShowOpen = true;
+					//ShowFileDialog([this]() {App->GetSceneManager().Open(Filename); });
 				}
 				if (ImGui::MenuItem("Save", "Ctrl+S")) 
 				{ 
-					if (App->GetSceneManager().GetActiveFile().length() > 0)
+					if (Filename.size() == 0)
+					{
+						ShowSave=true;
+					}
+					else App->GetSceneManager().SaveAs(Filename);
+					/*if (App->GetSceneManager().GetActiveFile().length() > 0)
 						App->GetSceneManager().Save();
-					else ShowFileDialog([this]() { App->GetSceneManager().Save(); });
+					else ShowFileDialog([this]() { App->GetSceneManager().Save(); });*/
 				}
 				if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
 				{
-					ShowFileDialog([this]() { App->GetSceneManager().SaveAs(Filename); });
+					ShowSave = true;
+					//ShowFileDialog([this]() { App->GetSceneManager().SaveAs(Filename); });
 				}
 				ImGui::Separator();
 				if (ImGui::MenuItem("Close", "Ctrl+W")) { App->GetSceneManager().Close(); }
@@ -67,26 +77,39 @@ namespace av
 			{
 				if (ImGui::MenuItem("Entity List")) ShowEntityListWindow = true;
 				if (ImGui::MenuItem("Toolbox")) ShowToolbox = true;
-				if (ImGui::MenuItem("Property Window")) ShowPropertyWindow = true;
-				if (ImGui::MenuItem("Minimap")) ShowMinimap = true;
+				//if (ImGui::MenuItem("Property Window")) ShowPropertyWindow = true;
+				//if (ImGui::MenuItem("Minimap")) ShowMinimap = true;
 				ImGui::Separator();
 				if (ImGui::MenuItem("ImGui demo window")) { ShowImGuiDemo = true; }
 
 				ImGui::EndMenu();
 			}
-			/*if (ImGui::BeginMenu("Help"))
-			{
-				if (ImGui::MenuItem("ImGui demo window"))
-				{
-					ShowImGuiDemo = true;
-				}
-				ImGui::EndMenu();
-			}*/
 		}
 		ImGui::EndMainMenuBar();
 	}
 
-	void GuiManager::ShowFileDialog(const std::function<void()> onConfirm)
+	void GuiManager::DrawFileDialogs()
+	{
+		if(ShowOpen)
+			ImGui::OpenPopup("Open File");
+
+		if(ShowSave)
+			ImGui::OpenPopup("Save File");
+
+		if (file_dialog.showFileDialog("Open File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310), ".scn"))
+		{
+			Filename = file_dialog.selected_path;
+			App->GetSceneManager().Open(Filename);
+			ShowOpen = false;
+		}
+		if (file_dialog.showFileDialog("Save File", imgui_addons::ImGuiFileBrowser::DialogMode::SAVE, ImVec2(700, 310), ".scn"))
+		{
+			Filename = file_dialog.selected_path;
+			App->GetSceneManager().SaveAs(Filename);
+			ShowSave = false;
+		}
+	}
+	/*void GuiManager::ShowFileDialog(const std::function<void()> onConfirm)
 	{
 
 	}
@@ -113,7 +136,7 @@ namespace av
 			ImGui::EndPopup();
 		}
 		
-	}
+	}*/
 
 	void GuiManager::DrawPropertyWindow()
 	{
@@ -124,6 +147,8 @@ namespace av
 
 	void GuiManager::DrawEntityList()
 	{
+		SceneEntity* deleting = nullptr;
+
 		ImGui::Begin("Entity List", &ShowEntityListWindow);
 		
 		//ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
@@ -200,6 +225,15 @@ namespace av
 						ImGui::TreePop();
 					}
 
+					if (ImGui::TreeNode("entity_delete", "Delete Entity"))
+					{
+						if (ImGui::Button("Delete"))
+						{
+							deleting = objects[i];
+						}
+						ImGui::TreePop();
+					}
+
 					ImGui::TreePop();
 				}
 				ImGui::PopID();
@@ -208,6 +242,8 @@ namespace av
 		}
 
 		ImGui::End();
+
+		if (deleting != nullptr) HandleDelete(deleting);
 	}
 
 	void GuiManager::DrawToolbox()
@@ -314,6 +350,11 @@ namespace av
 			.WithMaterial(*mat)
 			.OnScene(App->GetSceneManager().GetScene())
 			.Finish();
+	}
+
+	void GuiManager::HandleDelete(SceneEntity* entity)
+	{
+		App->GetSceneManager().GetScene()->RemoveObject(entity);
 	}
 
 	void GuiManager::DrawMinimap()
