@@ -9,7 +9,7 @@ namespace av
 	template <typename VertexT, typename IndexT>
 	class DrawSequence
 	{
-	public:
+	private:
 		VertexGroup<VertexT>* vertices = nullptr;
 		IndexGroup<IndexT>* indices = nullptr;
 		size_t vertex_offset = 0;

@@ -5,7 +5,6 @@ namespace av
 {
 	class SphereFactory : public PrimitiveFactory
 	{
-		Mesh* mesh = nullptr;
 		size_t counter = 0;
 	public:
 		SphereFactory(VertexArray<Vertex, ushort>& va) : PrimitiveFactory(va) {}

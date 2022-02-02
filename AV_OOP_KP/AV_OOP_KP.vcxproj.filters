@@ -63,9 +63,6 @@
     <ClCompile Include="scene\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scene\LightSource.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="scene\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -174,9 +171,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scene\ObjectGroup.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scene\LightSource.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scene\Scene.hpp">

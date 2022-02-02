@@ -14,9 +14,7 @@ namespace av
 		EditorApplication* App;
 
 		bool ShowImGuiDemo = false;
-		bool ShowPropertyWindow = false;
 		bool ShowEntityListWindow = false;
-		bool ShowMinimap = false;
 		bool ShowToolbox = false;
 
 		bool ShowOpen = false;
@@ -38,16 +36,8 @@ namespace av
 		void DrawGui();
 		void DrawFileDialogs();
 
-		void DrawPropertyWindow();
 		void DrawEntityList();
 		void DrawToolbox();
-		void DrawMinimap();
-
-		/*void ShowFileDialog(const std::function<void()> onConfirm);
-		void ShowConfirmDialog(
-			const std::string& description, 
-			const std::function<void()> onConfirm
-		);*/
 	};
 
 	class ModalWindow

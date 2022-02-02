@@ -30,9 +30,7 @@ namespace av
 	{
 		if (ShowImGuiDemo) ImGui::ShowDemoWindow(&ShowImGuiDemo);
 		if (ShowEntityListWindow) DrawEntityList();
-		if (ShowPropertyWindow) DrawPropertyWindow();
 		if (ShowToolbox) DrawToolbox();
-		if (ShowMinimap) DrawMinimap();
 	}
 
 	void GuiManager::DrawMainMenu()
@@ -114,41 +112,6 @@ namespace av
 			ShowSave = false;
 		}
 	}
-	/*void GuiManager::ShowFileDialog(const std::function<void()> onConfirm)
-	{
-
-	}
-
-	void GuiManager::ShowConfirmDialog(
-		const std::string& description, 
-		const std::function<void()> onConfirm)
-	{
-		ImGui::OpenPopup("ConfirmDialog");
-
-		ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-
-		if(ImGui::BeginPopupModal("ConfirmDialog", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			ImGui::Text(description.c_str());
-			ImGui::Separator();
-
-			if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
-			ImGui::SetItemDefaultFocus();
-			ImGui::SameLine();
-			if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
-
-			ImGui::EndPopup();
-		}
-		
-	}*/
-
-	void GuiManager::DrawPropertyWindow()
-	{
-		ImGui::Begin("Properties", &ShowPropertyWindow);
-
-		ImGui::End();
-	}
 
 	void GuiManager::DrawEntityList()
 	{
@@ -156,7 +119,6 @@ namespace av
 
 		ImGui::Begin("Entity List", &ShowEntityListWindow);
 		
-		//ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
 		if (ImGui::TreeNode("Scene Entities"))
 		{
 			auto objects = App->GetSceneManager().GetScene()->GetObjects();
@@ -360,14 +322,5 @@ namespace av
 	void GuiManager::HandleDelete(SceneEntity* entity)
 	{
 		App->GetSceneManager().GetScene()->RemoveObject(entity);
-	}
-
-	void GuiManager::DrawMinimap()
-	{
-		ImGui::SetWindowPos("Minimap", ImVec2(0.8f, 0.2f), ImGuiCond_Once);
-		ImGui::SetWindowSize("Minimap", ImVec2(100.f, 100.f), ImGuiCond_Once);
-		ImGui::Begin("Minimap", &ShowMinimap);
-
-		ImGui::End();
 	}
 }

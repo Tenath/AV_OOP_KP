@@ -10,7 +10,7 @@ namespace av
 		primitives = &g;
 	}
 
-	void TestSceneDirector::BuildTestScene(Scene& scene, Material& material)
+	void TestSceneDirector::BuildScene(Scene& scene, Material& material)
 	{
 		SceneEntity* entity = nullptr;
 

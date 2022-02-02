@@ -5,7 +5,6 @@ namespace av
 {
 	class TriangleFactory : public PrimitiveFactory
 	{
-		Mesh* mesh=nullptr;
 		size_t counter = 0;
 	public:
 		TriangleFactory(VertexArray<Vertex, ushort>& va) : PrimitiveFactory(va) {}

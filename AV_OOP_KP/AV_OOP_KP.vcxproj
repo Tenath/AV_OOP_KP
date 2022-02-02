@@ -166,7 +166,6 @@
     <ClCompile Include="primitives\SphereFactory.cpp" />
     <ClCompile Include="primitives\TetrahedronFactory.cpp" />
     <ClCompile Include="primitives\TriangleFactory.cpp" />
-    <ClCompile Include="scene\LightSource.cpp" />
     <ClCompile Include="scene\Material.cpp" />
     <ClCompile Include="scene\Mesh.cpp" />
     <ClCompile Include="scene\Model.cpp" />
@@ -206,7 +205,6 @@
     <ClInclude Include="primitives\SphereFactory.hpp" />
     <ClInclude Include="primitives\TetrahedronFactory.hpp" />
     <ClInclude Include="primitives\TriangleFactory.hpp" />
-    <ClInclude Include="scene\LightSource.hpp" />
     <ClInclude Include="scene\Material.hpp" />
     <ClInclude Include="scene\Mesh.hpp" />
     <ClInclude Include="scene\Model.hpp" />

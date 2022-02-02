@@ -70,38 +70,47 @@ namespace av
 
 		void Unbind() override;
 
-		void RestoreBufferBindings()
-		{
-			Bind();
-			glBindBuffer(GL_ARRAY_BUFFER, vb_handle);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib_handle);
-			Unbind();
-		}
+		void RestoreBufferBindings();
 
 		void Draw(size_t ps_index);
 
-		void AddDS(DrawSequence<VertexT,IndexT>* ds)
-		{
-			if (!VectorContains(drawseq, ds))
-			{
-				drawseq.push_back(ds);
-				RegenerateAndUpdate();
-			}
-		}
+		void AddDS(DrawSequence<VertexT, IndexT>* ds);
 
-		void RemoveDS(DrawSequence<VertexT, IndexT>* ds)
-		{
-			if (VectorContains(drawseq, ds))
-			{
-				drawseq.erase(std::find(drawseq.begin(), drawseq.end(), ds));
-				//std::remove(drawseq.begin(), drawseq.end(), ds);
-				RegenerateAndUpdate();
-			}
-		}
+		void RemoveDS(DrawSequence<VertexT, IndexT>* ds);
 
 		IndexT GetPrimitiveRestart() { return primitive_restart; }
 		void SetPrimitiveRestart(IndexT value) { primitive_restart = value; }
 	};
+
+	template <typename VertexT, typename IndexT>
+	void VertexArray<VertexT, IndexT>::RestoreBufferBindings()
+	{
+		Bind();
+		glBindBuffer(GL_ARRAY_BUFFER, vb_handle);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib_handle);
+		Unbind();
+	}
+
+	template <typename VertexT, typename IndexT>
+	void VertexArray<VertexT, IndexT>::AddDS(DrawSequence<VertexT, IndexT>* ds)
+	{
+		if (!VectorContains(drawseq, ds))
+		{
+			drawseq.push_back(ds);
+			RegenerateAndUpdate();
+		}
+	}
+
+	template <typename VertexT, typename IndexT>
+	void VertexArray<VertexT, IndexT>::RemoveDS(DrawSequence<VertexT, IndexT>* ds)
+	{
+		if (VectorContains(drawseq, ds))
+		{
+			drawseq.erase(std::find(drawseq.begin(), drawseq.end(), ds));
+			//std::remove(drawseq.begin(), drawseq.end(), ds);
+			RegenerateAndUpdate();
+		}
+	}
 
 	template <typename VertexT, typename IndexT> 
 	void VertexArray<VertexT, IndexT>::SetupGLObjects()

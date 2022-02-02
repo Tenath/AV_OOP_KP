@@ -6,11 +6,17 @@ namespace av
 	class Material;
 	class PrimitiveGenerator;
 
-	class TestSceneDirector
+	class SceneDirector
+	{
+	public:
+		virtual void BuildScene(Scene& scene, Material& m) = 0;
+	};
+
+	class TestSceneDirector : public SceneDirector
 	{
 		PrimitiveGenerator* primitives;
 	public:
 		TestSceneDirector(PrimitiveGenerator& g);
-		void BuildTestScene(Scene& scene, Material& m);
+		void BuildScene(Scene& scene, Material& m) override;
 	};
 }

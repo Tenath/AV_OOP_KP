@@ -24,26 +24,9 @@ namespace av
 		std::string SceneManifest = "scenelist.cfg";
 		std::string MaterialManifest = "materialslist.cfg";
 
-		std::string GetManifestPath(ResourceType type)
-		{
-			std::string result = BaseDirectory + "/";
+		std::string GetManifestPath(ResourceType type);
 
-			switch (type)
-			{
-			case ResourceType::Shader: result += ShaderManifest; break;
-			case ResourceType::Program: result += ProgramManifest; break;
-			case ResourceType::Model: result += ModelManifest; break;
-			case ResourceType::Scene: result += SceneManifest; break;
-			case ResourceType::Material: result += MaterialManifest; break;
-			}
-
-			return result;
-		}
-
-		std::string AppendBaseDir(std::string path)
-		{
-			return BaseDirectory + "/" + path;
-		}
+		std::string AppendBaseDir(std::string path);
 	};
 
 	class AppResources
@@ -69,13 +52,7 @@ namespace av
 	public:
 		void LoadResources();
 
-		~AppResources()
-		{
-			for (auto program : programs) delete program.second;
-			for (auto shader : shaders) delete shader.second;
-			for (auto model : models) delete model.second;
-			for (auto scene : scenes) delete scene.second;
-		}
+		~AppResources();
 
 		Model* GetModel(const std::string& filename);
 		//Model* LoadModel(const std::string& filename);

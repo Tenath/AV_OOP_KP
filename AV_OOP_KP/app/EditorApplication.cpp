@@ -38,7 +38,7 @@ namespace av
 
 	void EditorApplication::SetupTestScene()
 	{
-		test_director->BuildTestScene(*scene.GetScene(), *material);
+		test_director->BuildScene(*scene.GetScene(), *material);
 	}
 
 	void EditorApplication::ResetCameraPosition()

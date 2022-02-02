@@ -5,7 +5,6 @@ namespace av
 {
 	class DiamondFactory : public PrimitiveFactory
 	{
-		Mesh* mesh = nullptr;
 		size_t counter = 0;
 	public:
 		DiamondFactory(VertexArray<Vertex, ushort>& va) : PrimitiveFactory(va) {}

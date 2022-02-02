@@ -5,7 +5,6 @@ namespace av
 {
 	class TetrahedronFactory : public PrimitiveFactory
 	{
-		Mesh* mesh = nullptr;
 		size_t counter = 0;
 	public:
 		TetrahedronFactory(VertexArray<Vertex, ushort>& va) : PrimitiveFactory(va) {}

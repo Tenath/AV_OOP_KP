@@ -26,7 +26,7 @@ namespace av {
 		T* GetPtr(size_t r, size_t c) { if (c >= W || r >= H) return end(); else return data + c * H + r; }
 		const T* GetPtr(size_t r, size_t c) const { if (c >= W || r >= H) return end(); else return data + c * H + r; }
 
-		// The "Either I'm dumb or I really know what I'm doing" version, no checks.
+		// The "no checks" version
 		T* ComputePtr(size_t r, size_t c)
 		{
 			return data + c * H + r;

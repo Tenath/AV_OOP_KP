@@ -3,6 +3,35 @@
 
 namespace av
 {
+	std::string AppResourceConfig::GetManifestPath(ResourceType type)
+	{
+		std::string result = BaseDirectory + "/";
+
+		switch (type)
+		{
+		case ResourceType::Shader: result += ShaderManifest; break;
+		case ResourceType::Program: result += ProgramManifest; break;
+		case ResourceType::Model: result += ModelManifest; break;
+		case ResourceType::Scene: result += SceneManifest; break;
+		case ResourceType::Material: result += MaterialManifest; break;
+		}
+
+		return result;
+	}
+
+	std::string AppResourceConfig::AppendBaseDir(std::string path)
+	{
+		return BaseDirectory + "/" + path;
+	}
+
+	AppResources::~AppResources()
+	{
+		for (auto program : programs) delete program.second;
+		for (auto shader : shaders) delete shader.second;
+		for (auto model : models) delete model.second;
+		for (auto scene : scenes) delete scene.second;
+	}
+
 	/*Model* AppResources::LoadModel(const std::string& filename)
 	{
 		Model* result = GetModel(filename);
@@ -285,17 +314,6 @@ namespace av
 					Vector3f ambient = UnpackVectorString<3>(lsline[5]);
 					Vector3f diffuse = UnpackVectorString<3>(lsline[6]);
 					Vector3f specular = UnpackVectorString<3>(lsline[7]);
-
-					LightSource* ls = new LightSource;
-					ls->SetPosition(pos);
-					ls->SetAmbient(ambient);
-					ls->SetDiffuse(diffuse);
-					ls->SetSpecular(specular);
-					ls->SetParameters(constant, linear, quadratic);
-					//ls->
-					//ls->SetColor(color);
-
-					world->AddLightSource(ls);
 				}
 			}
 			catch (const std::exception& e)
